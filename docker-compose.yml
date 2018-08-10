@@ -1,0 +1,44 @@
+version: "2"
+
+services:
+    web:
+        container_name: symfony4_web
+        image: nginx:latest
+        env_file: ./docker/nginx/.env
+        volumes:
+            - ".:/home/docker"
+            - "./docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro"
+        links:
+            - fpm
+        depends_on:
+            - fpm
+
+    database:
+        container_name: symfony4_database
+        image: mysql:5.7
+        env_file: ./docker/mysql/.env
+        volumes:
+            - symfony4-data-mysql:/var/lib/mysql
+
+    fpm:
+        container_name: symfony4_fpm
+        image: ismaail/php:7.2-alpine-fpm-dev
+        volumes:
+            - ".:/home/docker:rw"
+        working_dir: "/home/docker"
+        links:
+            - database
+        depends_on:
+            - database
+
+#
+# Volumes definition
+#
+volumes:
+    symfony4-data-mysql:
+        driver: local
+
+networks:
+    default:
+        external:
+            name: nginx_reverse_proxy_network
