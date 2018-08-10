@@ -27,7 +27,7 @@ console:
 	docker exec -it \
 		-u $(UID) \
 		$(CONTAINER_FPM) \
-		php app/console $(cmd) \
+		php bin/console $(cmd) \
 		2>/dev/null || true
 
 cmd=""
@@ -49,8 +49,5 @@ nginx-reload:
 	docker kill -s HUP $(CONTAINER_NGINX) 2>/dev/null || true
 
 fix-permissions:
-	docker exec -it $(CONTAINER_FPM) chown -R 1000:100 ./app/logs 2>/dev/null || true && \
-	docker exec -it $(CONTAINER_FPM) chown -R 1000:100 ./app/cache 2>/dev/null || true && \
-	docker exec -it $(CONTAINER_FPM) chown    1000:100 ./app/bootstrap.php.cache 2>/dev/null || true && \
-	docker exec -it $(CONTAINER_FPM) chown -R 1000:100 ./vendor 2>/dev/null || true && \
-	docker exec -it $(CONTAINER_FPM) chown    1000:100 ./composer.lock 2>/dev/null || true
+	docker exec -it $(CONTAINER_FPM) chown -R 1000:100 ./var/log 2>/dev/null || true && \
+	docker exec -it $(CONTAINER_FPM) chown -R 1000:100 ./var/cache 2>/dev/null || true
