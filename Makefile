@@ -3,8 +3,8 @@
 # Set dir of Makefile to a variable to use later
 MAKEPATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 PWD := $(dir $(MAKEPATH))
-CONTAINER_FPM := "symfony4_fpm"
-CONTAINER_NGINX := "learnacademy_web"
+CONTAINER_FPM := "blogmvc_fpm"
+CONTAINER_NGINX := "blogmvc_web"
 UID := 1000
 
 up:

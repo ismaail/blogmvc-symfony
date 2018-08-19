@@ -2,7 +2,7 @@ version: "2"
 
 services:
     web:
-        container_name: symfony4_web
+        container_name: blogmvc_web
         image: nginx:latest
         env_file: ./docker/nginx/.env
         volumes:
@@ -14,14 +14,14 @@ services:
             - fpm
 
     database:
-        container_name: symfony4_database
+        container_name: blogmvc_database
         image: mysql:5.7
         env_file: ./docker/mysql/.env
         volumes:
-            - symfony4-data-mysql:/var/lib/mysql
+            - blogmvc-data-mysql:/var/lib/mysql
 
     fpm:
-        container_name: symfony4_fpm
+        container_name: blogmvc_fpm
         image: ismaail/php:7.2-alpine-fpm-dev
         volumes:
             - ".:/home/docker:rw"
@@ -35,7 +35,7 @@ services:
 # Volumes definition
 #
 volumes:
-    symfony4-data-mysql:
+    blogmvc-data-mysql:
         driver: local
 
 networks:
