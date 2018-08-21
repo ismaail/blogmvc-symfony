@@ -8,6 +8,10 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
+ * Class PostRepository
+ *
+ * @package App\Repository
+ *
  * @method Post|null find($id, $lockMode = null, $lockVersion = null)
  * @method Post|null findOneBy(array $criteria, array $orderBy = null)
  * @method Post[]    findAll()
