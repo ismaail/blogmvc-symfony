@@ -67,7 +67,7 @@ class PostFixtures extends Fixture implements DependentFixtureInterface
             $post
                 ->setCategory($category)
                 ->setTitle($this->faker->words(random_int(4, 10), true))
-                ->setContent('<p>' . implode('</p><p>', $this->faker->sentences(random_int(5, 14))) . '</p>')
+                ->setContent($this->faker->sentences(random_int(5, 14), true))
                 ->setCreatedAt($this->faker->dateTimeBetween('-24 months'))
                 ->setAuthor($this->randomAuthor())
             ;
