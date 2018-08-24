@@ -2,9 +2,7 @@
 
 namespace App\Tests\Entity;
 
-use App\Entity\Post;
-use App\Entity\User;
-use App\Entity\Category;
+use App\Tests\EntityCreator;
 use App\Tests\DatabaseTestCase;
 
 /**
@@ -18,28 +16,14 @@ use App\Tests\DatabaseTestCase;
  */
 class PostTest extends DatabaseTestCase
 {
+    use EntityCreator;
+
     /**
      * @test
      */
     public function it_creates_new_Post_with_the_correct_Slug()
     {
-        $category = new Category();
-        $category->setName('Category 1');
-        $this->entityManager->persist($category);
-
-        $author = new User();
-        $author->setUsername('User 1')->setPassword('password');
-        $this->entityManager->persist($author);
-
-        $post = new Post();
-        $post
-            ->setTitle('Some Title 123')
-            ->setContent('Some Content')
-            ->setCreatedAt(new \DateTime())
-            ->setCategory($category)
-            ->setAuthor($author);
-
-        $this->entityManager->persist($post);
+        $post = $this->createPost(['title' => 'Some Title 123']);
         $this->entityManager->flush();
 
         $this->assertEquals('some-title-123', $post->getSlug(), 'Wrong Post slug value.');
