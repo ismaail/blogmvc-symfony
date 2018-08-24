@@ -1,0 +1,42 @@
+{% macro paginate(paginator) %}
+    {% set page = app.request.get('page') ?: 1 %}
+    {% set countPages = paginator|length // paginator.query.maxResults + 1 %}
+
+    {% if(countPages > 1) %}
+        {% set nearbyPagesLimit = 4 %}
+        <ul class="pagination">
+            {# First #}
+            {% if page != 1 %}
+                <li><a href="?page=1" title="First"><span aria-hidden="true">&laquo;</span></a></li>
+            {% endif %}
+            {# Previous #}
+            {% if (page > 1) and (1 != countPages) %}
+                <li><a href="?page={{ page - 1 }}" title="Previous"><span aria-hidden="true">&lsaquo;</span></a></li>
+            {% endif %}
+            {% for p in 1..countPages %}
+                {% if 0 == (page - nearbyPagesLimit) - loop.index %} {# dot before #}
+                    <li class="disabled"><a href="#">...</a></li>
+                {% elseif 0 == (page + nearbyPagesLimit) - loop.index %} {# dot after #}
+                    <li class="disabled"><a href="#">...</a></li>
+                {% elseif 0 < (page - nearbyPagesLimit) - loop.index %} {# hide all before #}
+                {% elseif 0 > (page + nearbyPagesLimit) - loop.index %} {# hide all after #}
+                {% else %}
+                    {% if page == loop.index  %}
+                        {# Current #}
+                        <li class="active"><a>{{ loop.index }}</a></li>
+                    {% else %}
+                        <li><a href="?page={{ p }}">{{ loop.index }}</a></li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            {# Next #}
+            {% if page < countPages %}
+                <li><a href="?page={{ page + 1 }}" title="Next"><span aria-hidden="true">&rsaquo;</span></a></li>
+            {% endif %}
+            {# Last #}
+            {% if page != countPages %}
+                <li><a href="?page={{ countPages }}" title="Last"><span aria-hidden="true">&raquo;</span></a></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+{% endmacro %}
