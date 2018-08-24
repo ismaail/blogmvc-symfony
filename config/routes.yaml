@@ -1,3 +1,11 @@
 home:
     path: /
     controller: App\Controller\DefaultController::index
+    methods: [GET]
+
+post_show:
+    path: /post/{slug}
+    controller: App\Controller\DefaultController::show
+    requirements:
+        slug: "[a-zA-Z0-9-]+"
+    methods: [GET]

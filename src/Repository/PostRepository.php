@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Post;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
@@ -45,5 +46,31 @@ class PostRepository extends ServiceEntityRepository
         ;
 
         return new Paginator($query);
+    }
+
+    /**
+     * Find a single Post by slug,
+     * if not found, throws 404 error.
+     *
+     * @param string $slug
+     *
+     * @return \App\Entity\Post
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    public function findBySlug(string $slug)
+    {
+        $post = $this->createQueryBuilder('p')
+            ->leftJoin('p.category', 'c')->addSelect('c')
+            ->leftJoin('p.author', 'a')->addSelect('a')
+            ->where('p.slug = :slug')->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if (null === $post) {
+            throw new NotFoundHttpException('Post not found');
+        }
+
+        return $post;
     }
 }
