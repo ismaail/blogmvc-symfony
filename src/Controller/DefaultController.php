@@ -27,4 +27,17 @@ class DefaultController extends AbstractController
 
         return $this->render('default/index.html.twig', compact('posts'));
     }
+
+    /**
+     * @param string $slug
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function show(string $slug)
+    {
+        $postRepository = $this->getDoctrine()->getRepository(Post::class);
+        $post = $postRepository->findBySlug($slug);
+
+        return $this->render('default/index.show.twig', compact('post'));
+    }
 }
