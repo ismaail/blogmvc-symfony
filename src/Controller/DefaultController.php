@@ -38,6 +38,6 @@ class DefaultController extends AbstractController
         $postRepository = $this->getDoctrine()->getRepository(Post::class);
         $post = $postRepository->findBySlug($slug);
 
-        return $this->render('default/index.show.twig', compact('post'));
+        return $this->render('default/show.html.twig', compact('post'));
     }
 }
