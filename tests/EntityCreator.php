@@ -15,6 +15,8 @@ use App\Entity\Category;
  */
 trait EntityCreator
 {
+    private static $userCounter = 0;
+
     /**
      * @param array $input
      *
@@ -43,7 +45,7 @@ trait EntityCreator
     {
         $author = new User();
         $author
-            ->setUsername($input['username'] ?? 'jhon-doe')
+            ->setUsername($input['username'] ?? 'user_'.self::$userCounter++)
             ->setPassword($input['password'] ?? 'password');
 
         $this->entityManager->persist($author);

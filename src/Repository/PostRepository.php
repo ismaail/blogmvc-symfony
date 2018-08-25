@@ -33,19 +33,43 @@ class PostRepository extends ServiceEntityRepository
     /**
      * @param int $page
      * @param int $perPage
+     * @param array $filters
      *
      * @return \Doctrine\ORM\Tools\Pagination\Paginator
      */
-    public function paginate(int $page = 1, int $perPage = 10)
+    public function paginate(int $page = 1, int $perPage = 10, array $filters = [])
     {
-        $query = $this->createQueryBuilder('p')
+        $qb = $this->createQueryBuilder('p')
             ->orderBy('p.createdAt', 'DESC')
             ->setFirstResult(($page - 1) * $perPage)
-            ->setMaxResults($perPage)
-            ->getQuery()
-        ;
+            ->setMaxResults($perPage);
 
-        return new Paginator($query);
+        $this->setQueryFilters($qb, $filters);
+
+        return new Paginator($qb->getQuery());
+    }
+
+    /**
+     * @param \Doctrine\ORM\QueryBuilder $qb
+     * @param array $filters
+     */
+    private function setQueryFilters($qb, array $filters): void
+    {
+        // Filter by Category slug.
+        $category = $filters['category'] ?? null;
+        if (null !== $category) {
+            $qb->leftJoin('p.category', 'c')
+                ->where('c.slug = :slug')
+                ->setParameter('slug', $category);
+        }
+
+        // Filter by Author username.
+        $author = $filters['author'] ?? null;
+        if (null !== $author) {
+            $qb->leftJoin('p.author', 'a')
+                ->where('a.username = :username')
+                ->setParameter('username', $author);
+        }
     }
 
     /**

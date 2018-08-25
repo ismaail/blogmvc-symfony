@@ -9,3 +9,17 @@ post_show:
     requirements:
         slug: "[a-zA-Z0-9-]+"
     methods: [GET]
+
+category_posts:
+    path: /category/{slug}
+    controller: App\Controller\DefaultController::byCategory
+    requirements:
+        slug: "[a-zA-Z0-9-]+"
+    methods: [GET]
+
+author_posts:
+    path: /author/{username}
+    controller: App\Controller\DefaultController::byAuthor
+    requirements:
+        username: "[a-zA-Z0-9-_]+"
+    methods: [GET]
