@@ -1,6 +1,7 @@
 {% macro paginate(paginator) %}
     {% set page = app.request.get('page') ?: 1 %}
-    {% set countPages = paginator|length // paginator.query.maxResults + 1 %}
+    {% set countPages = paginator|length / paginator.query.maxResults %}
+    {% set countPages = countPages|round(0, 'ceil') %}
 
     {% if(countPages > 1) %}
         {% set nearbyPagesLimit = 4 %}
