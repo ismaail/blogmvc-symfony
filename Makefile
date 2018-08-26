@@ -59,6 +59,16 @@ tests:
 		./bin/phpunit \
 		2>/dev/null || true
 
+host?="127.0.0.1"
+tests-failing:
+	docker exec -it \
+		-u $(UID) \
+		-e XDEBUG_CONFIG="remote_connect_back=0 idekey=phpstorm-xdebug remote_host=$(host)" \
+		-e PHP_IDE_CONFIG="serverName=dockerhost" \
+		$(CONTAINER_FPM) \
+		./bin/phpunit --group=failing \
+		2>/dev/null || true
+
 nginx-reload:
 	docker kill -s HUP $(CONTAINER_NGINX) 2>/dev/null || true
 
