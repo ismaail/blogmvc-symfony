@@ -1,22 +1,18 @@
 # Blog MVC - Symfony 4
 
+![Build Status](https://travis-ci.org/ismaail/BlogMVC-Laravel.svg?branch=master)
+
 ##### Requirements
 
 - PHP 7.2
-
-<br>
 
 ##### Installation
 
 ```composer install```
 
-<br>
-
 ##### Configuration
 
 Copy ```.env.dist``` to ```.env``` and change database configuration.
-
-<br>
 
 ##### Database migrations and seed
 
@@ -27,8 +23,6 @@ Run migrations:
 Fill the database with data:
 
 ```php bin/console doctrine:fixtures:load```
-
-<br>
 
 ##### Tests
 
