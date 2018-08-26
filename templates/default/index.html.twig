@@ -16,7 +16,7 @@
                 <p><small>
                         Category : <a href="{{ path('category_posts', {slug: post.category.slug}) }}">{{ post.category.name }}</a>,
                         by <a href="{{ path('author_posts', {username: post.author.username}) }}">{{ post.author.username }}</a>
-                        on <em>{{ post.createdAt.format('F dS Y')}}</em>
+                        on <em>{{ post.createdAt.format('F jS Y')}}</em>
                     </small></p>
                 <p class="text-justify">{{ post.content|truncate(300) }}</p>
                 <p class="text-right">
