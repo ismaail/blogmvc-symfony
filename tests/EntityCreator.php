@@ -29,7 +29,7 @@ trait EntityCreator
         $category = new Category();
         $category->setName($input['name'] ?? 'Category Name');
 
-        $this->entityManager->persist($category);
+        $this->getEntityManager()->persist($category);
 
         return $category;
     }
@@ -48,7 +48,7 @@ trait EntityCreator
             ->setUsername($input['username'] ?? 'user_'.self::$userCounter++)
             ->setPassword($input['password'] ?? 'password');
 
-        $this->entityManager->persist($author);
+        $this->getEntityManager()->persist($author);
 
         return $author;
     }
@@ -80,7 +80,7 @@ trait EntityCreator
             ->setCategory($category)
             ->setAuthor($author);
 
-        $this->entityManager->persist($post);
+        $this->getEntityManager()->persist($post);
 
         return $post;
     }

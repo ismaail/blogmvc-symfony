@@ -24,7 +24,7 @@ class PostTest extends DatabaseTestCase
     public function it_creates_new_Post_with_the_correct_Slug()
     {
         $post = $this->createPost(['title' => 'Some Title 123']);
-        $this->entityManager->flush();
+        $this->getEntityManager()->flush();
 
         $this->assertEquals('some-title-123', $post->getSlug(), 'Wrong Post slug value.');
     }

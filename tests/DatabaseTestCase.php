@@ -4,19 +4,24 @@ namespace App\Tests;
 
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\DBAL\Schema\SchemaException;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Class DatabaseTestCase
  *
  * @package App\Tests
  */
-class DatabaseTestCase extends KernelTestCase
+class DatabaseTestCase extends WebTestCase
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Symfony\Component\DependencyInjection\Container
      */
-    protected $entityManager;
+    protected static $container;
+
+    /**
+     * @var \Symfony\Bundle\FrameworkBundle\Client
+     */
+    protected $client;
 
     /**
      * @var array
@@ -24,32 +29,62 @@ class DatabaseTestCase extends KernelTestCase
     private $metadata;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     */
+    public function __construct($name = null, array $data = [], $dataName = '')
+    {
+        parent::__construct($name, $data, $dataName);
+
+        if (! static::$kernel) {
+            static::$kernel = self::createKernel([
+                'environment' => 'test',
+                'debug' => true,
+            ]);
+
+            static::$kernel->boot();
+        }
+
+        static::$container = static::$kernel->getContainer();
+    }
+
+    /**
+     * Create Doctrine Schemas.
      */
     protected function setUp()
     {
-        $kernel = self::bootKernel();
+        parent::setUp();
 
-        $this->entityManager = $kernel->getContainer()
-            ->get('doctrine')
-            ->getManager();
+        $this->client = static::createClient();
 
         // Entities metadata.
-        $this->metadata = $this->entityManager->getMetadataFactory()->getAllMetadata();
+        $this->metadata = $this->getEntityManager()->getMetadataFactory()->getAllMetadata();
 
         $this->generateSchema();
+
+        // Clear EntityManager from previous tests data.
+        $this->getEntityManager()->clear();
+    }
+
+    /**
+     * Returns the doctrine orm entity manager
+     *
+     * @return \Doctrine\ORM\EntityManager
+     */
+    protected function getEntityManager()
+    {
+        return static::$container->get('doctrine.orm.entity_manager');
     }
 
     /**
      * Create Schema from Entities Metadata.
      *
-     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws SchemaException
      * @throws \Doctrine\ORM\Tools\ToolsException
      */
-    private function generateSchema()
+    protected function generateSchema()
     {
         if (! empty($this->metadata)) {
-            $tool = new SchemaTool($this->entityManager);
+            $tool = new SchemaTool($this->getEntityManager());
             $tool->createSchema($this->metadata);
         } else {
             throw new SchemaException('No Metadata Classes to process.');
@@ -57,13 +92,17 @@ class DatabaseTestCase extends KernelTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * Drop Doctrine Schemas.
      */
     protected function tearDown()
     {
-        parent::tearDown();
+        if (! empty($this->metadata)) {
+            $tool = new SchemaTool($this->getEntityManager());
+            $tool->dropSchema($this->metadata);
+        } else {
+            throw new SchemaException('No Metadata Classes to process.');
+        }
 
-        $this->entityManager->close();
-        $this->entityManager = null; // avoid memory leaks
+        parent::tearDown();
     }
 }

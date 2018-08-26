@@ -31,7 +31,7 @@ class PostRepositoryTest extends DatabaseTestCase
     {
         parent::setUp();
 
-        $this->postRepository = $this->entityManager->getRepository(Post::class);
+        $this->postRepository = $this->getEntityManager()->getRepository(Post::class);
     }
 
     /**
@@ -42,7 +42,7 @@ class PostRepositoryTest extends DatabaseTestCase
         // Preparations
         $this->createPost();
         $this->createPost();
-        $this->entityManager->flush();
+        $this->getEntityManager()->flush();
 
         // Actions
         $paginator = $this->postRepository->paginate(1, 10);
@@ -64,7 +64,7 @@ class PostRepositoryTest extends DatabaseTestCase
         $this->createPost([], $category1);
         $this->createPost([], $category2);
 
-        $this->entityManager->flush();
+        $this->getEntityManager()->flush();
 
         // Actions
         $paginator1 = $this->postRepository->paginate(1, 10, ['category' => 'cat-1']);
@@ -98,7 +98,7 @@ class PostRepositoryTest extends DatabaseTestCase
         $this->createPost([], null, $author2);
         $this->createPost([], null, $author2);
 
-        $this->entityManager->flush();
+        $this->getEntityManager()->flush();
 
         // Actions
         $paginator1 = $this->postRepository->paginate(1, 10, ['author' => 'user_A']);
@@ -125,7 +125,7 @@ class PostRepositoryTest extends DatabaseTestCase
     public function it_returns_a_single_post_by_slug()
     {
         $this->createPost(['title' => 'Some Title 123']);
-        $this->entityManager->flush();
+        $this->getEntityManager()->flush();
 
         $foundPost = $this->postRepository->findBySlug('some-title-123');
 

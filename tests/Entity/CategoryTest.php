@@ -24,8 +24,8 @@ class CategoryTest extends DatabaseTestCase
         $category = new Category();
         $category->setName('Foo Bar');
 
-        $this->entityManager->persist($category);
-        $this->entityManager->flush();
+        $this->getEntityManager()->persist($category);
+        $this->getEntityManager()->flush();
 
         $this->assertEquals('foo-bar', $category->getSlug(), 'Wrong Category slug value.');
     }
