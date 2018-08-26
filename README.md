@@ -1,6 +1,6 @@
 # Blog MVC - Symfony 4
 
-![Build Status](https://travis-ci.org/ismaail/BlogMVC-Laravel.svg?branch=master)
+[![Build Status](https://travis-ci.org/ismaail/blogmvc-sf4.svg?branch=develop)](https://travis-ci.org/ismaail/blogmvc-sf4)
 
 ##### Requirements
 
