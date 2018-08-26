@@ -34,9 +34,9 @@ class DefaultControllerTest extends WebTestCase
      */
     protected function setUp()
     {
-        parent::setUp();
-
         $this->client = static::createClient();
+
+        parent::setUp();
     }
 
     /**
