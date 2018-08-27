@@ -30,6 +30,9 @@
             {{ paginator.paginate(posts) }}
         </div>
     </div>
-    {# Categories Sidebar #}
-    {#{% include 'partials/sidebar.html.twig' %}#}
+    {# Sidebar #}
+    <div class="col-md-4 sidebar">
+        {{ render(controller('App\\Controller\\SidebarController::categories')) }}
+        {{ render(controller('App\\Controller\\SidebarController::latestPosts')) }}
+    </div>
 {% endblock %}
