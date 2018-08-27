@@ -1,0 +1,11 @@
+{# @var latestPosts \App\Entity\Post[] #}
+<h4>Last posts</h4>
+<div class="list-group">
+    {% if latestPosts is defined %}
+        {% for post in latestPosts %}
+            <a href="{{ path('post_show', {slug: post.slug}) }}" class="list-group-item">
+                {{ post.title }}
+            </a>
+        {% endfor %}
+    {% endif %}
+</div>

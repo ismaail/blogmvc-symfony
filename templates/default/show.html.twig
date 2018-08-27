@@ -19,4 +19,9 @@
         </article>
         <hr>
     </div>
+    {# Sidebar #}
+    <div class="col-md-4 sidebar">
+        {{ render(controller('App\\Controller\\SidebarController::categories')) }}
+        {{ render(controller('App\\Controller\\SidebarController::latestPosts')) }}
+    </div>
 {% endblock %}

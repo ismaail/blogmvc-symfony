@@ -8,6 +8,7 @@ use App\Entity\Category;
 use App\Tests\TestHelper;
 use App\Tests\DoctrineMocker;
 use App\Repository\PostRepository;
+use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
@@ -47,14 +48,20 @@ class DefaultControllerTest extends WebTestCase
         // Preparations
         $postRepository = $this->getMockBuilder(PostRepository::class)
             ->disableOriginalConstructor()
-            ->setMethods(['paginate'])
+            ->setMethods(['paginate', 'latest'])
+            ->getMock();
+
+        $categoryRepository = $this->getMockBuilder(CategoryRepository::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['findAll'])
             ->getMock();
 
         $doctrine = $this->mockDoctrine();
-        $doctrine->expects($this->once())
-            ->method('getRepository')
-            ->with(Post::class)
-            ->willReturn($postRepository);
+        $doctrine->expects($this->exactly(3))->method('getRepository')->will($this->returnValueMap([
+            [Post::class, null, $postRepository],
+            [Post::class, null, $postRepository],
+            [Category::class, null, $categoryRepository],
+        ]));
 
         $posts = $this->createPosts();
         $paginator = $this->mockPaginator($posts, 10);
@@ -63,8 +70,19 @@ class DefaultControllerTest extends WebTestCase
             ->with(1, 10, [])
             ->willReturn($paginator);
 
+        $postRepository->expects($this->once())
+            ->method('latest')
+            ->with(5)
+            ->willReturn([]);
+
+        $categoryRepository->expects($this->once())
+            ->method('findAll')
+            ->willReturn([]);
+
         // Actions
         $crawler = $this->client->request('GET', '/');
+
+        $this->handleTestError($this->client->getResponse(), $crawler);
 
         // Assertions
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), 'Wrong Request status code.');
@@ -95,14 +113,20 @@ class DefaultControllerTest extends WebTestCase
         // Preparations
         $postRepository = $this->getMockBuilder(PostRepository::class)
             ->disableOriginalConstructor()
-            ->setMethods(['paginate'])
+            ->setMethods(['paginate', 'latest'])
+            ->getMock();
+
+        $categoryRepository = $this->getMockBuilder(CategoryRepository::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['findAll'])
             ->getMock();
 
         $doctrine = $this->mockDoctrine();
-        $doctrine->expects($this->once())
-            ->method('getRepository')
-            ->with(Post::class)
-            ->willReturn($postRepository);
+        $doctrine->expects($this->exactly(3))->method('getRepository')->will($this->returnValueMap([
+            [Post::class, null, $postRepository],
+            [Post::class, null, $postRepository],
+            [Category::class, null, $categoryRepository],
+        ]));
 
         $posts = $this->createPosts();
         $paginator = $this->mockPaginator([$posts[0]], 10);
@@ -116,7 +140,7 @@ class DefaultControllerTest extends WebTestCase
 
         // Assertions
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), 'Wrong Request status code.');
-        $this->assertCount(1, $crawler);
+        $this->assertCount(1, $crawler->filter('article > h2'));
     }
 
     /**
@@ -127,14 +151,20 @@ class DefaultControllerTest extends WebTestCase
         // Preparations
         $postRepository = $this->getMockBuilder(PostRepository::class)
             ->disableOriginalConstructor()
-            ->setMethods(['paginate'])
+            ->setMethods(['paginate', 'latest'])
+            ->getMock();
+
+        $categoryRepository = $this->getMockBuilder(CategoryRepository::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['findAll'])
             ->getMock();
 
         $doctrine = $this->mockDoctrine();
-        $doctrine->expects($this->once())
-            ->method('getRepository')
-            ->with(Post::class)
-            ->willReturn($postRepository);
+        $doctrine->expects($this->exactly(3))->method('getRepository')->will($this->returnValueMap([
+            [Post::class, null, $postRepository],
+            [Post::class, null, $postRepository],
+            [Category::class, null, $categoryRepository],
+        ]));
 
         $posts = $this->createPosts();
         $paginator = $this->mockPaginator([$posts[0]], 10);
@@ -148,7 +178,7 @@ class DefaultControllerTest extends WebTestCase
 
         // Assertions
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), 'Wrong Request status code.');
-        $this->assertCount(1, $crawler);
+        $this->assertCount(1, $crawler->filter('article > h2'));
     }
 
     /**
