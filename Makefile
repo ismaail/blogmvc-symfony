@@ -1,4 +1,4 @@
-.PHONY: up start stop down reboot console composer migrate seed tests nginx-reload fix-permissions
+.PHONY: up start stop down reboot console composer migrate seed tests tests-report tests-failing nginx-reload fix-permissions
 
 # Set dir of Makefile to a variable to use later
 MAKEPATH := $(abspath $(lastword $(MAKEFILE_LIST)))
@@ -57,6 +57,14 @@ tests:
 		-u $(UID) \
 		$(CONTAINER_FPM) \
 		./bin/phpunit \
+		2>/dev/null || true
+
+
+tests-report:
+	docker exec -it \
+		-u $(UID) \
+		$(CONTAINER_FPM) \
+		./bin/phpunit --coverage-html var/log/tests-report \
 		2>/dev/null || true
 
 host?="127.0.0.1"
