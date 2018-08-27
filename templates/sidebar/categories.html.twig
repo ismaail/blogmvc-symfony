@@ -1,0 +1,12 @@
+{# @var categories \App\Entity\Category[] #}
+<h4>Categories</h4>
+<div class="list-group">
+    {% if categories is defined %}
+        {% for category in categories %}
+            <a href="{{ path('category_posts', {slug: category.slug}) }}" class="list-group-item">
+                <span class="badge">{{ category.postCount }}</span>
+                {{ category.name }}
+            </a>
+        {% endfor %}
+    {% endif %}
+</div>
