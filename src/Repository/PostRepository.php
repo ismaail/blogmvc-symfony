@@ -97,4 +97,18 @@ class PostRepository extends ServiceEntityRepository
 
         return $post;
     }
+
+    /**
+     * @param int $cout
+     *
+     * @return \App\Entity\Post[]
+     */
+    public function latest(int $cout)
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.createdAt', 'desc')
+            ->setMaxResults($cout)
+            ->getQuery()
+            ->getResult();
+    }
 }
