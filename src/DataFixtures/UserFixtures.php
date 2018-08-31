@@ -44,7 +44,8 @@ class UserFixtures extends Fixture
         for ($i = 0; $i < $number; $i++) {
             $user = new User();
             $user->setUsername(sprintf('user_%d', $i + 1));
-            $user->setPassword('password');
+            $user->setPassword($user->hash('password'));
+            $user->setRoles([User::ROLE_ADMIN]);
 
             yield $user;
         }
