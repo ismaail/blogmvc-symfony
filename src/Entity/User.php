@@ -197,13 +197,13 @@ class User implements UserInterface
     /**
      * Hash a string using BCRYPT
      *
-     * @param $string
+     * @param string $string
      *
      * @return string
      *
      * @throws \RuntimeException
      */
-    public function hash($string): string
+    public function hash(string $string): string
     {
         $hashedPassword = password_hash($string, PASSWORD_BCRYPT, ['cost' => 10]);
 
