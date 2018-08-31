@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class User
@@ -13,7 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @const string
@@ -98,7 +99,7 @@ class User
      */
     public function setPassword(string $password): self
     {
-        $this->password = password_hash($password, PASSWORD_BCRYPT);
+        $this->password = $password;
 
         return $this;
     }
@@ -168,5 +169,48 @@ class User
         $this->roles = $roles;
 
         return $this;
+    }
+
+    /**
+     * Returns the salt that was originally used to encode the password.
+     *
+     * This can return null if the password was not encoded using a salt.
+     *
+     * @return string|null The salt
+     */
+    public function getSalt()
+    {
+        return null;
+    }
+
+    /**
+     * Removes sensitive data from the user.
+     *
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
+     */
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * Hash a string using BCRYPT
+     *
+     * @param $string
+     *
+     * @return string
+     *
+     * @throws \RuntimeException
+     */
+    public function hash($string): string
+    {
+        $hashedPassword = password_hash($string, PASSWORD_BCRYPT, ['cost' => 10]);
+
+        if (false === $hashedPassword) {
+            throw new \RuntimeException('Error hashing User password');
+        }
+
+        return $hashedPassword;
     }
 }
