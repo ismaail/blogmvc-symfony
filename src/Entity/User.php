@@ -16,6 +16,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 class User
 {
     /**
+     * @const string
+     */
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+
+    /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer", options={"unsigned": true})
@@ -36,6 +41,11 @@ class User
      * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="author")
      */
     private $posts;
+
+    /**
+     * @ORM\Column(type="json_array")
+     */
+    private $roles;
 
     /**
      * User constructor.
@@ -130,6 +140,32 @@ class User
                 $post->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * Returns the roles granted to the user.
+     *
+     * Alternatively, the roles might be stored on a ``roles`` property,
+     * and populated in any number of different ways when the user object
+     * is created.
+     *
+     * @return string[] The user roles
+     */
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    /**
+     * @param array $roles
+     *
+     * @return \App\Entity\User
+     */
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
 
         return $this;
     }
