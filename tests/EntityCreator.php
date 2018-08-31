@@ -11,7 +11,7 @@ use App\Entity\Category;
  *
  * @package App\Tests
  *
- * @property \Doctrine\ORM\EntityManager $entityManager
+ * @method \Doctrine\ORM\EntityManager getEntityManager()
  */
 trait EntityCreator
 {
@@ -46,7 +46,9 @@ trait EntityCreator
         $author = new User();
         $author
             ->setUsername($input['username'] ?? 'user_'.self::$userCounter++)
-            ->setPassword($input['password'] ?? 'password');
+            ->setPassword($input['password'] ?? 'password')
+            ->setRoles([User::ROLE_ADMIN])
+            ;
 
         $this->getEntityManager()->persist($author);
 
