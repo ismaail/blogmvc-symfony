@@ -10,7 +10,22 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse navbar-right">
             <ul class="nav navbar-nav">
-                <li><a href="#">Admin</a></li>
+                {% if app.user %}
+                    <li><a href="#">Admin</a></li>
+                {% else %}
+                    <li>
+                        {#<a href="#">Sign-up</a> | #}
+                        <a href="{{ path('login') }}">Login</a>
+                    </li>
+                {% endif %}
+
+                {#{% if app.user %}#}
+                    {#<span>{{ app.user.username }}</span> | <a href="/logout">Logout</a>#}
+                {#{% else %}#}
+                    {#<a href="{{ path('signup') }}">Sign-up</a> |#}
+                    {#<a href="/login">Login</a>#}
+                {#{% endif %}#}
+
             </ul>
         </div>
     </div>

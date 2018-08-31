@@ -23,3 +23,9 @@ author_posts:
     requirements:
         username: "[a-zA-Z0-9-_]+"
     methods: [GET]
+
+# Auth routes
+login:
+    path: /login
+    controller: App\Controller\Auth\AuthController::login
+    methods: [GET, POST]
