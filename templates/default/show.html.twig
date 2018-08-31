@@ -9,8 +9,10 @@
         <div class="page-header">
             <h1>{{ post.title}}</h1>
             <p><small>
-                    Category : <a href="#">{{ post.category.name }}</a>,
-                    by <a href="#">{{ post.author.username }}</a> on <em>{{ post.createdAt.format('F jS Y') }}</em>
+                    Category : <a href="{{ path('category_posts', {slug: post.category.slug}) }}">
+                        {{ post.category.name }}</a>,
+                    by <a href="{{ path('author_posts', {username: post.author.username}) }}">{{ post.author.username }}</a>
+                    on <em>{{ post.createdAt.format('F jS Y') }}</em>
                 </small></p>
         </div>
         {# Post Content #}
