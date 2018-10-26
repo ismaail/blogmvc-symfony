@@ -73,7 +73,7 @@ class Category
      *
      * @return \App\Entity\Category
      */
-    public function setName(string $name): self
+    public function setName(string $name): Category
     {
         $this->name = $name;
 
@@ -93,7 +93,7 @@ class Category
      *
      * @return \App\Entity\Category
      */
-    public function setSlug(string $slug): self
+    public function setSlug(string $slug): Category
     {
         $this->slug = $slug;
 
@@ -113,7 +113,7 @@ class Category
      *
      * @return \App\Entity\Category
      */
-    public function setPostCount(int $postCount): self
+    public function setPostCount(int $postCount): Category
     {
         $this->postCount = $postCount;
 
@@ -133,7 +133,7 @@ class Category
      *
      * @return \App\Entity\Category
      */
-    public function addPost(Post $post): self
+    public function addPost(Post $post): Category
     {
         if (!$this->posts->contains($post)) {
             $this->posts[] = $post;
@@ -148,7 +148,7 @@ class Category
      *
      * @return \App\Entity\Category
      */
-    public function removePost(Post $post): self
+    public function removePost(Post $post): Category
     {
         if ($this->posts->contains($post)) {
             $this->posts->removeElement($post);

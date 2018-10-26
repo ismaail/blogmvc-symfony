@@ -77,7 +77,7 @@ class User implements UserInterface
      *
      * @return \App\Entity\User
      */
-    public function setUsername(string $username): self
+    public function setUsername(string $username): User
     {
         $this->username = $username;
 
@@ -97,7 +97,7 @@ class User implements UserInterface
      *
      * @return \App\Entity\User
      */
-    public function setPassword(string $password): self
+    public function setPassword(string $password): User
     {
         $this->password = $password;
 
@@ -117,7 +117,7 @@ class User implements UserInterface
      *
      * @return \App\Entity\User
      */
-    public function addPost(Post $post): self
+    public function addPost(Post $post): User
     {
         if (!$this->posts->contains($post)) {
             $this->posts[] = $post;
@@ -132,7 +132,7 @@ class User implements UserInterface
      *
      * @return \App\Entity\User
      */
-    public function removePost(Post $post): self
+    public function removePost(Post $post): User
     {
         if ($this->posts->contains($post)) {
             $this->posts->removeElement($post);
@@ -164,7 +164,7 @@ class User implements UserInterface
      *
      * @return \App\Entity\User
      */
-    public function setRoles(array $roles): self
+    public function setRoles(array $roles): User
     {
         $this->roles = $roles;
 

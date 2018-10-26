@@ -75,7 +75,7 @@ class Post
      *
      * @return \App\Entity\Post
      */
-    public function setTitle(string $title): self
+    public function setTitle(string $title): Post
     {
         $this->title = $title;
 
@@ -95,7 +95,7 @@ class Post
      *
      * @return \App\Entity\Post
      */
-    public function setSlug(string $slug): self
+    public function setSlug(string $slug): Post
     {
         $this->slug = $slug;
 
@@ -115,7 +115,7 @@ class Post
      *
      * @return \App\Entity\Post
      */
-    public function setContent(string $content): self
+    public function setContent(string $content): Post
     {
         $this->content = $content;
 
@@ -135,7 +135,7 @@ class Post
      *
      * @return \App\Entity\Post
      */
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt(\DateTimeInterface $createdAt): Post
     {
         $this->createdAt = $createdAt;
 
@@ -155,7 +155,7 @@ class Post
      *
      * @return \App\Entity\Post
      */
-    public function setCategory(?Category $category): self
+    public function setCategory(?Category $category): Post
     {
         $this->category = $category;
 
@@ -175,7 +175,7 @@ class Post
      *
      * @return \App\Entity\Post
      */
-    public function setAuthor(?User $author): self
+    public function setAuthor(?User $author): Post
     {
         $this->author = $author;
 
