@@ -5,3 +5,6 @@ doctrine:
             default:
                 driver: pdo_sqlite
                 memory: true
+    orm:
+        metadata_cache_driver: array
+        query_cache_driver: array
