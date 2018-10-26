@@ -21,13 +21,21 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 class PostRepository extends ServiceEntityRepository
 {
     /**
+     * @var bool
+     */
+    private $useCache;
+
+    /**
      * PostRepository constructor.
      *
      * @param \Symfony\Bridge\Doctrine\RegistryInterface $registry
+     * @param bool $useCache
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(RegistryInterface $registry, bool $useCache)
     {
         parent::__construct($registry, Post::class);
+
+        $this->useCache = $useCache;
     }
 
     /**
@@ -40,13 +48,18 @@ class PostRepository extends ServiceEntityRepository
     public function paginate(int $page = 1, int $perPage = 10, array $filters = [])
     {
         $qb = $this->createQueryBuilder('p')
+            ->leftJoin('p.category', 'c')->addSelect('c')
+            ->leftJoin('p.author', 'a')->addSelect('a')
             ->orderBy('p.createdAt', 'DESC')
             ->setFirstResult(($page - 1) * $perPage)
             ->setMaxResults($perPage);
 
         $this->setQueryFilters($qb, $filters);
 
-        return new Paginator($qb->getQuery());
+        $query = $qb->getQuery();
+        $query->useResultCache($this->useCache, null, 'posts_all');
+
+        return new Paginator($query);
     }
 
     /**
@@ -58,17 +71,15 @@ class PostRepository extends ServiceEntityRepository
         // Filter by Category slug.
         $category = $filters['category'] ?? null;
         if (null !== $category) {
-            $qb->leftJoin('p.category', 'c')
-                ->where('c.slug = :slug')
-                ->setParameter('slug', $category);
+            $qb->where('c.slug = :slug')
+               ->setParameter('slug', $category);
         }
 
         // Filter by Author username.
         $author = $filters['author'] ?? null;
         if (null !== $author) {
-            $qb->leftJoin('p.author', 'a')
-                ->where('a.username = :username')
-                ->setParameter('username', $author);
+            $qb->where('a.username = :username')
+               ->setParameter('username', $author);
         }
     }
 
@@ -84,11 +95,13 @@ class PostRepository extends ServiceEntityRepository
      */
     public function findBySlug(string $slug)
     {
-        $post = $this->createQueryBuilder('p')
+        $query = $this->createQueryBuilder('p')
             ->leftJoin('p.category', 'c')->addSelect('c')
             ->leftJoin('p.author', 'a')->addSelect('a')
             ->where('p.slug = :slug')->setParameter('slug', $slug)
-            ->getQuery()
+            ->getQuery();
+
+        $post = $query->useResultCache($this->useCache, null, 'posts_all')
             ->getOneOrNullResult();
 
         if (null === $post) {
@@ -105,10 +118,13 @@ class PostRepository extends ServiceEntityRepository
      */
     public function latest(int $cout)
     {
-        return $this->createQueryBuilder('p')
+        $query = $this->createQueryBuilder('p')
+            ->leftJoin('p.author', 'a')->addSelect('a')
             ->orderBy('p.createdAt', 'desc')
             ->setMaxResults($cout)
-            ->getQuery()
+            ->getQuery();
+
+        return $query->useResultCache($this->useCache, null, 'posts_latest')
             ->getResult();
     }
 }

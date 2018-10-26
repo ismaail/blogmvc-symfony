@@ -20,6 +20,23 @@ services:
         volumes:
             - blogmvc-data-mysql:/var/lib/mysql
 
+    redis:
+        container_name: blogmvc_redis
+        image: redis:4.0
+#        volumes:
+#            - data-blogmvc-redis:/data
+
+    redis-browser:
+        container_name: blogmvc_redis_browser
+        image: birkof/redis-browser
+        links:
+            - redis
+        depends_on:
+            - redis
+        ports:
+            - "4567:4567"
+        command: --url redis://redis:6379 --bind 0.0.0.0
+
     fpm:
         container_name: blogmvc_fpm
         image: ismaail/php:7.2-alpine-fpm-dev
@@ -28,8 +45,10 @@ services:
         working_dir: "/home/docker"
         links:
             - database
+            - redis
         depends_on:
             - database
+            - redis
 
 #
 # Volumes definition
@@ -37,6 +56,8 @@ services:
 volumes:
     blogmvc-data-mysql:
         driver: local
+#    data-blogmvc-redis:
+#        driver: local
 
 networks:
     default:
