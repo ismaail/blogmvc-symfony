@@ -2,24 +2,26 @@
 
 namespace App\DataFixtures;
 
-use Faker;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserFixtures extends Fixture
 {
     /**
-     * @var \Faker\Generator
+     * @var \Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface
      */
-    private $faker;
+    private $passwordEncoder;
 
     /**
      * CategoryFixtures constructor.
+     *
+     * @param \Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface $passwordEncoder
      */
-    public function __construct()
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
-        $this->faker = Faker\Factory::create();
+        $this->passwordEncoder = $passwordEncoder;
     }
 
     /**
@@ -44,7 +46,7 @@ class UserFixtures extends Fixture
         for ($i = 0; $i < $number; $i++) {
             $user = new User();
             $user->setUsername(sprintf('user_%d', $i + 1));
-            $user->setPassword($user->hash('password'));
+            $user->setPassword($this->passwordEncoder->encodePassword($user, 'password'));
             $user->setRoles([User::ROLE_ADMIN]);
 
             yield $user;

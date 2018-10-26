@@ -193,24 +193,4 @@ class User implements UserInterface
     {
         // TODO: Implement eraseCredentials() method.
     }
-
-    /**
-     * Hash a string using BCRYPT
-     *
-     * @param string $string
-     *
-     * @return string
-     *
-     * @throws \RuntimeException
-     */
-    public function hash(string $string): string
-    {
-        $hashedPassword = password_hash($string, PASSWORD_BCRYPT, ['cost' => 10]);
-
-        if (false === $hashedPassword) {
-            throw new \RuntimeException('Error hashing User password');
-        }
-
-        return $hashedPassword;
-    }
 }

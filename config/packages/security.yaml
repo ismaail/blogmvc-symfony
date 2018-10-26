@@ -8,9 +8,9 @@ security:
                 property: username
 
     encoders:
-        App\Entity\User: bcrypt
-#            algorithm: bcrypt
-#            cost: 10
+        App\Entity\User:
+            algorithm: bcrypt
+            cost: 10
 
     firewalls:
         dev:
