@@ -72,7 +72,7 @@ class Post
     /**
      * @return int|null
      */
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -80,7 +80,7 @@ class Post
     /**
      * @return null|string
      */
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -118,9 +118,9 @@ class Post
     }
 
     /**
-     * @return null|string
+     * @return string
      */
-    public function getContent(): ?string
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -138,9 +138,9 @@ class Post
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @return \DateTimeInterface
      */
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt;
     }
@@ -160,17 +160,17 @@ class Post
     /**
      * @return \App\Entity\Category|null
      */
-    public function getCategory(): ?Category
+    public function getCategory(): Category
     {
         return $this->category;
     }
 
     /**
-     * @param \App\Entity\Category|null $category
+     * @param \App\Entity\Category $category
      *
      * @return \App\Entity\Post
      */
-    public function setCategory(?Category $category): Post
+    public function setCategory(Category $category): Post
     {
         $this->category = $category;
 
@@ -178,19 +178,19 @@ class Post
     }
 
     /**
-     * @return \App\Entity\User|null
+     * @return \App\Entity\User
      */
-    public function getAuthor(): ?User
+    public function getAuthor(): User
     {
         return $this->author;
     }
 
     /**
-     * @param \App\Entity\User|null $author
+     * @param \App\Entity\User $author
      *
      * @return \App\Entity\Post
      */
-    public function setAuthor(?User $author): Post
+    public function setAuthor(User $author): Post
     {
         $this->author = $author;
 
