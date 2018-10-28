@@ -20,6 +20,22 @@
             {{ post.content }}
         </article>
         <hr>
+        {# Comments #}
+        <section class="post-comments">
+            <h4>{{ 'Comment'|transchoice(post.comments.count()) }}</h4>
+            {% for comment in post.comments %}
+                <div class="row">
+                    <div class="col-md-2">
+                        <img src="{{ comment.gravatar }}" width="100%">
+                    </div>
+                    <div class="col-md-10">
+                        <p><strong>@{{ comment.username }}</strong> {{ comment.createdAt.format('F jS Y') }}</p>
+                        <p>{{ comment.content }}</p>
+                    </div>
+                </div>
+                <br>
+            {% endfor %}
+        </section>
     </div>
     {# Sidebar #}
     <div class="col-md-4 sidebar">
