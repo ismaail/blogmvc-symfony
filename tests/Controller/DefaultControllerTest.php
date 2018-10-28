@@ -4,6 +4,7 @@ namespace App\Tests\Controller;
 
 use App\Entity\Post;
 use App\Entity\User;
+use App\Entity\Comment;
 use App\Entity\Category;
 use App\Tests\TestHelper;
 use App\Tests\DoctrineMocker;
@@ -41,6 +42,30 @@ class DefaultControllerTest extends WebTestCase
     }
 
     /**
+     * @param \PHPUnit\Framework\MockObject\MockObject $postRepository
+     *
+     * @return array
+     */
+    private function mockEmbedControllers($postRepository)
+    {
+        $categoryRepository = $this->getMockBuilder(CategoryRepository::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['findAll'])
+            ->getMock();
+
+        $postRepository->expects($this->once())
+            ->method('latest')
+            ->with(5)
+            ->willReturn([]);
+
+        $categoryRepository->expects($this->once())
+            ->method('findAll')
+            ->willReturn([]);
+
+        return [$categoryRepository];
+    }
+
+    /**
      * @test
      */
     public function it_list_paginated_posts()
@@ -51,10 +76,7 @@ class DefaultControllerTest extends WebTestCase
             ->setMethods(['paginate', 'latest'])
             ->getMock();
 
-        $categoryRepository = $this->getMockBuilder(CategoryRepository::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['findAll'])
-            ->getMock();
+        [$categoryRepository] = $this->mockEmbedControllers($postRepository);
 
         $doctrine = $this->mockDoctrine();
         $doctrine->expects($this->exactly(3))->method('getRepository')->will($this->returnValueMap([
@@ -69,15 +91,6 @@ class DefaultControllerTest extends WebTestCase
             ->method('paginate')
             ->with(1, 10, [])
             ->willReturn($paginator);
-
-        $postRepository->expects($this->once())
-            ->method('latest')
-            ->with(5)
-            ->willReturn([]);
-
-        $categoryRepository->expects($this->once())
-            ->method('findAll')
-            ->willReturn([]);
 
         // Actions
         $crawler = $this->client->request('GET', '/');
@@ -116,10 +129,7 @@ class DefaultControllerTest extends WebTestCase
             ->setMethods(['paginate', 'latest'])
             ->getMock();
 
-        $categoryRepository = $this->getMockBuilder(CategoryRepository::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['findAll'])
-            ->getMock();
+        [$categoryRepository] = $this->mockEmbedControllers($postRepository);
 
         $doctrine = $this->mockDoctrine();
         $doctrine->expects($this->exactly(3))->method('getRepository')->will($this->returnValueMap([
@@ -154,10 +164,7 @@ class DefaultControllerTest extends WebTestCase
             ->setMethods(['paginate', 'latest'])
             ->getMock();
 
-        $categoryRepository = $this->getMockBuilder(CategoryRepository::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['findAll'])
-            ->getMock();
+        [$categoryRepository] = $this->mockEmbedControllers($postRepository);
 
         $doctrine = $this->mockDoctrine();
         $doctrine->expects($this->exactly(3))->method('getRepository')->will($this->returnValueMap([
@@ -182,6 +189,68 @@ class DefaultControllerTest extends WebTestCase
     }
 
     /**
+     * @test
+     */
+    public function it_shows_post_with_comments()
+    {
+        $postRepository = $this->getMockBuilder(PostRepository::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['findBySlug', 'latest'])
+            ->getMock();
+
+        [$categoryRepository] = $this->mockEmbedControllers($postRepository);
+
+        $doctrine = $this->mockDoctrine();
+        $doctrine->expects($this->exactly(3))->method('getRepository')->will($this->returnValueMap([
+            [Post::class, null, $postRepository],
+            [Post::class, null, $postRepository],
+            [Category::class, null, $categoryRepository],
+        ]));
+
+        /** @var \App\Entity\Post $post */
+        $post = $this->createPosts()[0];
+
+        $comment = (new Comment())
+            ->setUsername('Jhon Smith')
+            ->setEmail('smith@example.com')
+            ->setCreatedAt(new \DateTime('2018-10-30'))
+            ->setUpdatedAt(new \DateTime('2018-10-30'))
+            ->setContent('Some Comment')
+            ;
+        $post->addComment($comment);
+
+        //$paginator = $this->mockPaginator($posts, 10);
+        $postRepository->expects($this->once())
+            ->method('findBySlug')
+            ->with('post-title-1')
+            ->willReturn($post);
+
+        // Actions
+        $crawler = $this->client->request('GET', '/post/post-title-1');
+
+        $this->handleTestError($this->client->getResponse(), $crawler);
+
+        // Assertions
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), 'Wrong Request status code.');
+
+        $this->assertCount(1, $post->getComments(), '>>> Wrong Comments count.');
+
+        $postTitle = $crawler->filter('.page-header > h1');
+        $this->assertEquals('Post Title 1', $postTitle->eq(0)->text());
+        $postMetadata = $crawler->filter('.page-header > p > small');
+        $this->assertContains('Category : Cat A', $postMetadata->text());
+        $this->assertContains('by jhon doe', $postMetadata->text());
+        $this->assertContains('on January 1st 2018', $postMetadata->text());
+        $commentsSectionHeader = $crawler->filter('.post-comments > h4');
+        $this->assertEquals('1 Comment', $commentsSectionHeader->text(), '>>> Wrong Comments count text.');
+        $commentImage = $crawler->filter('.post-comments img');
+        $this->assertEquals('https://www.gravatar.com/avatar/adf8993c31e25d3cdab61f992e5d98d4?d=mm&s=100', $commentImage->attr('src'), '>>> Wrong Comment avatar image src');
+        $comment = $crawler->filter('.post-comments p');
+        $this->assertEquals('@Jhon Smith October 30th 2018', $comment->eq(0)->text(), '>>> Wrong Comment username & date.');
+        $this->assertEquals('Some Comment', $comment->eq(1)->text(), '>>> Wrong Comment content.');
+    }
+
+    /**
      * Create 1 Posts, each with a separate Category & Author.
      *
      * @return array
@@ -202,6 +271,7 @@ class DefaultControllerTest extends WebTestCase
         $post1
             ->setTitle('Post Title 1')
             ->setSlug('post-title-1')
+            ->setContent('Post 1 Content')
             ->setCreatedAt(new \DateTime('2018-01-01'))
             ->setCategory($category1)
             ->setAuthor($author1);
@@ -210,6 +280,7 @@ class DefaultControllerTest extends WebTestCase
         $post2
             ->setTitle('Post Title 2')
             ->setSlug('post-title-2')
+            ->setContent('Post 1 Content')
             ->setCreatedAt(new \DateTime('2018-10-30'))
             ->setCategory($category2)
             ->setAuthor($author2);
