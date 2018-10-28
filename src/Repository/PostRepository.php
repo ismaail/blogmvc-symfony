@@ -98,6 +98,7 @@ class PostRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('p')
             ->leftJoin('p.category', 'c')->addSelect('c')
             ->leftJoin('p.author', 'a')->addSelect('a')
+            ->leftJoin('p.comments', 'm')->addSelect('m')
             ->where('p.slug = :slug')->setParameter('slug', $slug)
             ->getQuery();
 
