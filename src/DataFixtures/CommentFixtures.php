@@ -38,7 +38,7 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
         $posts = $manager->getRepository(Post::class)->findAll();
 
         foreach ($posts as $post) {
-            foreach ($this->create() as $comment) {
+            foreach ($this->create($post) as $comment) {
                 $post->addComment($comment);
                 $manager->persist($comment);
             }
@@ -48,9 +48,12 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
     }
 
     /**
+     * @param \App\Entity\Post $post
+     *
      * @return \Generator|\App\Entity\Comment
+     * @throws \Exception
      */
-    private function create()
+    private function create($post)
     {
         $number = random_int(1, 5);
 
@@ -59,9 +62,10 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
                 ->setUsername($this->faker->userName)
                 ->setEmail($this->faker->email)
                 ->setContent($this->faker->sentences(random_int(1, 5), true))
-                ->setCreatedAt(new \DateTime())
-                ->setUpdatedAt(new \DateTime())
+                ->setCreatedAt($this->faker->dateTimeBetween($post->getCreatedAt()))
                 ;
+
+            $comment->setUpdatedAt($comment->getCreatedAt());
 
             yield $comment;
         }
