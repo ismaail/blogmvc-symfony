@@ -43,8 +43,7 @@ trait EntityCreator
      */
     public function createUser(array $input = []): User
     {
-        $author = new User();
-        $author
+        $author = (new User())
             ->setUsername($input['username'] ?? 'user_'.self::$userCounter++)
             ->setPassword($input['password'] ?? 'password')
             ->setRoles([User::ROLE_ADMIN])
@@ -78,9 +77,13 @@ trait EntityCreator
         $post
             ->setTitle($input['title'] ?? 'Some Title')
             ->setContent($input['content'] ?? 'Some Content')
-            ->setCreatedAt($input['created_at'] ?? new \DateTime())
             ->setCategory($category)
             ->setAuthor($author);
+
+        $createdAt = $input['created_at'] ?? null;
+        if ($createdAt) {
+            $post->setCreatedAt($createdAt);
+        }
 
         $this->getEntityManager()->persist($post);
 

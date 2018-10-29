@@ -143,4 +143,16 @@ class PostRepositoryTest extends DatabaseTestCase
 
         $this->postRepository->findBySlug('non-existant-post');
     }
+
+    /**
+     * @test
+     */
+    public function createdAt_datetime_is_auto_generated()
+    {
+        $this->createPost();
+        $this->getEntityManager()->flush();
+
+        $post = $this->postRepository->find(1);
+        $this->assertInstanceOf(\DateTime::class, $post->getCreatedAt());
+    }
 }
