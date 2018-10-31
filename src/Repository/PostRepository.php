@@ -100,6 +100,7 @@ class PostRepository extends ServiceEntityRepository
             ->leftJoin('p.author', 'a')->addSelect('a')
             ->leftJoin('p.comments', 'm')->addSelect('m')
             ->where('p.slug = :slug')->setParameter('slug', $slug)
+            ->orderBy('m.createdAt', 'desc')
             ->getQuery();
 
         $post = $query->useResultCache($this->useCache, null, 'posts_all')
