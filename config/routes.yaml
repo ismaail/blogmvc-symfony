@@ -10,6 +10,13 @@ post_show:
         slug: "[a-zA-Z0-9-]+"
     methods: [GET]
 
+post_comment_store:
+    path: /post/{slug}/comment
+    controller: App\Controller\CommentController::store
+    requirements:
+        slug: "[a-zA-Z0-9-]+"
+    methods: [POST]
+
 category_posts:
     path: /category/{slug}
     controller: App\Controller\DefaultController::byCategory
