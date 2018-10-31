@@ -19,6 +19,12 @@
             {{ post.content }}
         </article>
         <hr>
+        {# Comment Form #}
+        <h4>Add new Comment:</h4>
+        {{ form_start(form, { 'action': path('post_comment_store', {'slug': post.slug}) }) }}
+            {{ form_widget(form) }}
+        {{ form_end(form) }}
+        <hr>
         {# Comments #}
         <section class="post-comments">
             <h4>{{ 'Comment'|transchoice(post.comments.count()) }}</h4>
