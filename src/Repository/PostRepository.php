@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Post;
+use App\Entity\Comment;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -26,15 +27,22 @@ class PostRepository extends ServiceEntityRepository
     private $useCache;
 
     /**
+     * @var \Predis\Client
+     */
+    private $cacheDriver;
+
+    /**
      * PostRepository constructor.
      *
      * @param \Symfony\Bridge\Doctrine\RegistryInterface $registry
+     * @param \Predis\Client $cacheDriver
      * @param bool $useCache
      */
-    public function __construct(RegistryInterface $registry, bool $useCache)
+    public function __construct(RegistryInterface $registry, $cacheDriver, bool $useCache)
     {
         parent::__construct($registry, Post::class);
 
+        $this->cacheDriver = $cacheDriver;
         $this->useCache = $useCache;
     }
 
@@ -128,5 +136,21 @@ class PostRepository extends ServiceEntityRepository
 
         return $query->useResultCache($this->useCache, null, 'posts_latest')
             ->getResult();
+    }
+
+    /**
+     * @param \App\Entity\Post $post
+     * @param \App\Entity\Comment $comment
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function addComment(Post $post, Comment $comment): void
+    {
+        $post->addComment($comment);
+        $this->getEntityManager()->persist($comment);
+        $this->getEntityManager()->flush();
+
+        $this->cacheDriver->expire('[posts_all][1]', 0);
     }
 }

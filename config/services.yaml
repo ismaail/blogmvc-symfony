@@ -33,6 +33,7 @@ services:
     App\Repository\PostRepository:
         arguments:
             $registry: '@doctrine'
+            $cacheDriver: '@snc_redis.doctrine'
             $useCache: true
     App\Repository\CategoryRepository:
         arguments:
