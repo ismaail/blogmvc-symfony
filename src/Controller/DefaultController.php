@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Form\CommentType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -77,6 +78,8 @@ class DefaultController extends AbstractController
         $postRepository = $this->getDoctrine()->getRepository(Post::class);
         $post = $postRepository->findBySlug($slug);
 
-        return $this->render('default/show.html.twig', compact('post'));
+        $form = $this->createForm(CommentType::class)->createView();
+
+        return $this->render('default/show.html.twig', compact('post', 'form'));
     }
 }
