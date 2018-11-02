@@ -21,10 +21,13 @@ class CategoryFixtures extends Fixture
 
     /**
      * CategoryFixtures constructor.
+     *
+     * @param \Predis\Client $cacheDriver
      */
-    public function __construct()
+    public function __construct($cacheDriver)
     {
         $this->faker = Faker\Factory::create();
+        $cacheDriver->flushall();
     }
 
     /**

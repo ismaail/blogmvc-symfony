@@ -39,3 +39,6 @@ services:
         arguments:
             $registry: '@doctrine'
             $useCache: true
+    App\DataFixtures\CategoryFixtures:
+        arguments:
+            $cacheDriver: '@snc_redis.doctrine'
