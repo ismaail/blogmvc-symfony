@@ -16,13 +16,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class CommentController extends AbstractController
 {
     /**
-     * @param \App\Entity\Post $post
+     * @param string $slug
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function store(Post $post, Request $request)
+    public function store(string $slug, Request $request)
     {
+        $postRepository = $this->getDoctrine()->getRepository(Post::class);
+        $post = $postRepository->findBySlug($slug);
+
         $form = $this->createForm(CommentType::class, new Comment());
         $form->handleRequest($request);
 
