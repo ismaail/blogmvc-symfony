@@ -28,6 +28,6 @@ doctrine:
                 prefix: 'App\Entity'
                 alias: App
         # enable metadata caching
-        metadata_cache_driver: redis
+        # metadata_cache_driver: redis
         # enable query caching
-        query_cache_driver: redis
+        # query_cache_driver: redis

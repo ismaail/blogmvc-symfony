@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
@@ -21,9 +21,9 @@ class UserRepository extends ServiceEntityRepository
     /**
      * UserRepository constructor.
      *
-     * @param \Symfony\Bridge\Doctrine\RegistryInterface $registry
+     * @param \Doctrine\Persistence\ManagerRegistry $registry
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
     }

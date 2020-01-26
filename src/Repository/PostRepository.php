@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\Post;
 use App\Entity\Comment;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
@@ -34,11 +34,11 @@ class PostRepository extends ServiceEntityRepository
     /**
      * PostRepository constructor.
      *
-     * @param \Symfony\Bridge\Doctrine\RegistryInterface $registry
+     * @param \Doctrine\Persistence\ManagerRegistry $registry
      * @param \Predis\Client $cacheDriver
      * @param bool $useCache
      */
-    public function __construct(RegistryInterface $registry, $cacheDriver, bool $useCache)
+    public function __construct(ManagerRegistry $registry, $cacheDriver, bool $useCache)
     {
         parent::__construct($registry, Post::class);
 

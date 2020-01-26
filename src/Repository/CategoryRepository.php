@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Category;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
@@ -25,10 +25,10 @@ class CategoryRepository extends ServiceEntityRepository
     /**
      * CategoryRepository constructor.
      *
-     * @param \Symfony\Bridge\Doctrine\RegistryInterface $registry
+     * @param \Doctrine\Persistence\ManagerRegistry $registry
      * @param bool $useCache
      */
-    public function __construct(RegistryInterface $registry, bool $useCache)
+    public function __construct(ManagerRegistry $registry, bool $useCache)
     {
         parent::__construct($registry, Category::class);
 
