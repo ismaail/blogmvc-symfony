@@ -4,7 +4,7 @@
     "license": "MIT",
     "description": "A skeleton to start a new Symfony website",
     "require": {
-        "php": "^7.3",
+        "php": "^7.4",
         "ext-iconv": "*",
         "gedmo/doctrine-extensions": "^2.4",
         "predis/predis": "^1.1",

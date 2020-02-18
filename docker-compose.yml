@@ -1,6 +1,53 @@
-version: "2"
+version: "3"
 
 services:
+    database:
+        container_name: blogmvc_database
+        image: mysql:5.7
+        env_file: ./docker/mysql/.env
+        volumes:
+            - blogmvc-data-mysql:/var/lib/mysql
+
+    wwwsqldesigner:
+        container_name: blogmvc_wwwsqldesigner
+        image: ismaail/wwwsqldesigner
+        ports:
+            - "8000:80"
+        links:
+            - database
+        depends_on:
+            - database
+        environment:
+            - IMPORT_DB_HOST=database
+            - IMPORT_DB_USER=root
+            - IMPORT_DB_PASSWORD=docker
+            - SAVE_DB_HOST=database
+            - SAVE_DB_USER=docker
+            - SAVE_DB_PASSWORD=docker
+            - SAVE_DB_DATABASE=blogmvc
+
+    redis:
+        container_name: blogmvc_redis
+        image: redis:5.0
+#        volumes:
+#            - data-blogmvc-redis:/data
+
+    fpm:
+        container_name: blogmvc_fpm
+        image: ismaail/php:7.4-alpine-fpm-dev
+        environment:
+           - COMPOSER_MEMORY_LIMIT=-1
+        volumes:
+            - ".:/home/docker:rw"
+#            - "./docker/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini"
+        working_dir: "/home/docker"
+        links:
+            - database
+            - redis
+        depends_on:
+            - database
+            - redis
+
     web:
         container_name: blogmvc_web
         image: nginx:latest
@@ -12,43 +59,6 @@ services:
             - fpm
         depends_on:
             - fpm
-
-    database:
-        container_name: blogmvc_database
-        image: mysql:5.7
-        env_file: ./docker/mysql/.env
-        volumes:
-            - blogmvc-data-mysql:/var/lib/mysql
-
-    redis:
-        container_name: blogmvc_redis
-        image: redis:4.0
-#        volumes:
-#            - data-blogmvc-redis:/data
-
-    redis-browser:
-        container_name: blogmvc_redis_browser
-        image: birkof/redis-browser
-        links:
-            - redis
-        depends_on:
-            - redis
-        ports:
-            - "4567:4567"
-        command: --url redis://redis:6379 --bind 0.0.0.0
-
-    fpm:
-        container_name: blogmvc_fpm
-        image: ismaail/php:7.2-alpine-fpm-dev
-        volumes:
-            - ".:/home/docker:rw"
-        working_dir: "/home/docker"
-        links:
-            - database
-            - redis
-        depends_on:
-            - database
-            - redis
 
 #
 # Volumes definition
