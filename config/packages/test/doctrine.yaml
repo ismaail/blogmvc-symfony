@@ -6,5 +6,16 @@ doctrine:
                 driver: pdo_sqlite
                 memory: true
     orm:
-        metadata_cache_driver: array
-        query_cache_driver: array
+        metadata_cache_driver:
+            type: pool
+            pool: cache_array
+        query_cache_driver:
+            type: pool
+            pool: cache_array
+
+
+framework:
+    cache:
+        pools:
+            cache_array:
+                adapter: cache.adapter.array
