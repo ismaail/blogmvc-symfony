@@ -13,61 +13,6 @@ namespace App\Tests;
 trait DoctrineMocker
 {
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|\Doctrine\Bundle\DoctrineBundle\
-     */
-    public function mockDoctrine()
-    {
-        $mock = $this->getMockBuilder(\Doctrine\Bundle\DoctrineBundle\Registry::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['getRepository', 'clear'])
-            ->getMock()
-        ;
-
-        $this->client->getContainer()->set('doctrine.orm.default_entity_manager', $mock);
-
-        return $mock;
-    }
-
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|\Doctrine\ORM\EntityManager
-     */
-    public function mockEntityManager()
-    {
-        $mock = $this->getMockBuilder(\Doctrine\ORM\EntityManager::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['getConfiguration'])
-            ->getMock()
-        ;
-
-        $mock->expects($this->any())
-            ->method('getConfiguration')
-            ->willReturn($this->mockConfiguration());
-
-        return $mock;
-    }
-
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|\Doctrine\ORM\Configuration
-     */
-    public function mockConfiguration()
-    {
-        $mock = $this->getMockBuilder(\Doctrine\ORM\Configuration::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['getDefaultQueryHints', 'isSecondLevelCacheEnabled'])
-            ->getMock();
-
-        $mock->expects($this->any())
-            ->method('getDefaultQueryHints')
-            ->willReturn([]);
-
-        $mock->expects($this->any())
-            ->method('isSecondLevelCacheEnabled')
-            ->willReturn(false);
-
-        return $mock;
-    }
-
-    /**
      * @param array $items
      * @param int $maxResult
      *
@@ -83,9 +28,45 @@ trait DoctrineMocker
         $query = new \Doctrine\ORM\Query($this->mockEntityManager());
         $query->setMaxResults($maxResult);
 
-        $mock->expects($this->any())->method('count')->willReturn(\count($items));
-        $mock->expects($this->any())->method('getQuery')->willReturn($query);
-        $mock->expects($this->any())->method('getIterator')->willReturn(new \ArrayIterator($items));
+        $mock->method('count')->willReturn(\count($items));
+        $mock->method('getQuery')->willReturn($query);
+        $mock->method('getIterator')->willReturn(new \ArrayIterator($items));
+
+        return $mock;
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|\Doctrine\ORM\EntityManager
+     */
+    public function mockEntityManager()
+    {
+        $mock = $this->getMockBuilder(\Doctrine\ORM\EntityManager::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getConfiguration'])
+            ->getMock()
+        ;
+
+        $mock->method('getConfiguration')
+            ->willReturn($this->mockConfiguration());
+
+        return $mock;
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|\Doctrine\ORM\Configuration
+     */
+    public function mockConfiguration()
+    {
+        $mock = $this->getMockBuilder(\Doctrine\ORM\Configuration::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getDefaultQueryHints', 'isSecondLevelCacheEnabled'])
+            ->getMock();
+
+        $mock->method('getDefaultQueryHints')
+            ->willReturn([]);
+
+        $mock->method('isSecondLevelCacheEnabled')
+            ->willReturn(false);
 
         return $mock;
     }

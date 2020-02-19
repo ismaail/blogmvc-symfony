@@ -1,0 +1,7 @@
+services:
+    app.repository.post_repository:
+        alias: App\Repository\PostRepository
+        public: true
+    app.repository.category_repository:
+        alias: App\Repository\CategoryRepository
+        public: true

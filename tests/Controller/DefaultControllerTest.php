@@ -78,19 +78,15 @@ class DefaultControllerTest extends WebTestCase
 
         [$categoryRepository] = $this->mockEmbedControllers($postRepository);
 
-        $doctrine = $this->mockDoctrine();
-        $doctrine->expects($this->exactly(3))->method('getRepository')->will($this->returnValueMap([
-            [Post::class, null, $postRepository],
-            [Post::class, null, $postRepository],
-            [Category::class, null, $categoryRepository],
-        ]));
-
         $posts = $this->createPosts();
         $paginator = $this->mockPaginator($posts, 10);
         $postRepository->expects($this->once())
             ->method('paginate')
             ->with(1, 10, [])
             ->willReturn($paginator);
+
+        $this->client->getContainer()->set('app.repository.post_repository', $postRepository);
+        $this->client->getContainer()->set('app.repository.category_repository', $categoryRepository);
 
         // Actions
         $crawler = $this->client->request('GET', '/');
@@ -131,19 +127,15 @@ class DefaultControllerTest extends WebTestCase
 
         [$categoryRepository] = $this->mockEmbedControllers($postRepository);
 
-        $doctrine = $this->mockDoctrine();
-        $doctrine->expects($this->exactly(3))->method('getRepository')->will($this->returnValueMap([
-            [Post::class, null, $postRepository],
-            [Post::class, null, $postRepository],
-            [Category::class, null, $categoryRepository],
-        ]));
-
         $posts = $this->createPosts();
         $paginator = $this->mockPaginator([$posts[0]], 10);
         $postRepository->expects($this->once())
             ->method('paginate')
             ->with(1, 10, ['category' => 'cat-a'])
             ->willReturn($paginator);
+
+        $this->client->getContainer()->set('app.repository.post_repository', $postRepository);
+        $this->client->getContainer()->set('app.repository.category_repository', $categoryRepository);
 
         // Actions
         $crawler = $this->client->request('GET', '/category/cat-a');
@@ -166,19 +158,15 @@ class DefaultControllerTest extends WebTestCase
 
         [$categoryRepository] = $this->mockEmbedControllers($postRepository);
 
-        $doctrine = $this->mockDoctrine();
-        $doctrine->expects($this->exactly(3))->method('getRepository')->will($this->returnValueMap([
-            [Post::class, null, $postRepository],
-            [Post::class, null, $postRepository],
-            [Category::class, null, $categoryRepository],
-        ]));
-
         $posts = $this->createPosts();
         $paginator = $this->mockPaginator([$posts[0]], 10);
         $postRepository->expects($this->once())
             ->method('paginate')
             ->with(1, 10, ['author' => 'jhon-doe'])
             ->willReturn($paginator);
+
+        $this->client->getContainer()->set('app.repository.post_repository', $postRepository);
+        $this->client->getContainer()->set('app.repository.category_repository', $categoryRepository);
 
         // Actions
         $crawler = $this->client->request('GET', '/author/jhon-doe');
@@ -200,13 +188,6 @@ class DefaultControllerTest extends WebTestCase
 
         [$categoryRepository] = $this->mockEmbedControllers($postRepository);
 
-        $doctrine = $this->mockDoctrine();
-        $doctrine->expects($this->exactly(3))->method('getRepository')->will($this->returnValueMap([
-            [Post::class, null, $postRepository],
-            [Post::class, null, $postRepository],
-            [Category::class, null, $categoryRepository],
-        ]));
-
         /** @var \App\Entity\Post $post */
         $post = $this->createPosts()[0];
 
@@ -224,6 +205,9 @@ class DefaultControllerTest extends WebTestCase
             ->method('findBySlug')
             ->with('post-title-1')
             ->willReturn($post);
+
+        $this->client->getContainer()->set('app.repository.post_repository', $postRepository);
+        $this->client->getContainer()->set('app.repository.category_repository', $categoryRepository);
 
         // Actions
         $crawler = $this->client->request('GET', '/post/post-title-1');
