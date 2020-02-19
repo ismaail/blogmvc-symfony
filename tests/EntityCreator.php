@@ -80,7 +80,7 @@ trait EntityCreator
             ->setCategory($category)
             ->setAuthor($author);
 
-        $createdAt = $input['created_at'] ?? null;
+        $createdAt = $input['created_at'] ?? new \DateTime();
         if ($createdAt) {
             $post->setCreatedAt($createdAt);
         }
