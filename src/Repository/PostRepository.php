@@ -65,7 +65,10 @@ class PostRepository extends ServiceEntityRepository
         $this->setQueryFilters($qb, $filters);
 
         $query = $qb->getQuery();
-        $query->useResultCache($this->useCache, null, 'posts_all');
+
+        if ($this->useCache) {
+            $query->enableResultCache(null, 'posts_all');
+        }
 
         return new Paginator($query);
     }
@@ -111,8 +114,11 @@ class PostRepository extends ServiceEntityRepository
             ->orderBy('m.createdAt', 'desc')
             ->getQuery();
 
-        $post = $query->useResultCache($this->useCache, null, 'posts_all')
-            ->getOneOrNullResult();
+        if ($this->useCache) {
+            $query->enableResultCache(null, 'posts_all');
+        }
+
+        $post = $query->getOneOrNullResult();
 
         if (null === $post) {
             throw new NotFoundHttpException('Post not found');
@@ -134,8 +140,11 @@ class PostRepository extends ServiceEntityRepository
             ->setMaxResults($cout)
             ->getQuery();
 
-        return $query->useResultCache($this->useCache, null, 'posts_latest')
-            ->getResult();
+        if ($this->useCache) {
+            $query->enableResultCache(null, 'posts_latest');
+        }
+
+        return $query->getresult();
     }
 
     /**

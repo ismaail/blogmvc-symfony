@@ -40,9 +40,13 @@ class CategoryRepository extends ServiceEntityRepository
      */
     public function findAll()
     {
-        return $this->createQueryBuilder('c')
-            ->getQuery()
-            ->useResultCache($this->useCache, null, 'categories_all')
-            ->getResult();
+        $query = $this->createQueryBuilder('c')
+            ->getQuery();
+
+        if ($this->useCache) {
+            $query->enableResultCache(null, 'categories_all');
+        }
+
+        return $query->getResult();
     }
 }
