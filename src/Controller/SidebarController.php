@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Post;
-use App\Entity\Category;
+use App\Repository\PostRepository;
+use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -14,21 +14,25 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class SidebarController extends AbstractController
 {
     /**
+     * @param \App\Repository\CategoryRepository $categoryRepository
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function categories()
+    public function categories(CategoryRepository $categoryRepository)
     {
-        $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
+        $categories = $categoryRepository->findAll();
 
         return $this->render('sidebar/categories.html.twig', compact('categories'));
     }
 
     /**
+     * @param \App\Repository\PostRepository $postRepository
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function latestPosts()
+    public function latestPosts(PostRepository $postRepository)
     {
-        $latestPosts = $this->getDoctrine()->getRepository(Post::class)->latest(5);
+        $latestPosts = $postRepository->latest(5);
 
         return $this->render('sidebar/latest_post.html.twig', compact('latestPosts'));
     }

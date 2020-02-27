@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Post;
 use App\Entity\Comment;
 use App\Form\CommentType;
+use App\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -18,12 +18,15 @@ class CommentController extends AbstractController
     /**
      * @param string $slug
      * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \App\Repository\PostRepository $postRepository
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function store(string $slug, Request $request)
+    public function store(string $slug, Request $request, PostRepository $postRepository)
     {
-        $postRepository = $this->getDoctrine()->getRepository(Post::class);
         $post = $postRepository->findBySlug($slug);
 
         $form = $this->createForm(CommentType::class, new Comment());
@@ -38,7 +41,6 @@ class CommentController extends AbstractController
 
         /** @var \App\Entity\Comment $comment */
         $comment = $form->getData();
-        $postRepository = $this->getDoctrine()->getRepository(Post::class);
         $postRepository->addComment($post, $comment);
 
         return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
