@@ -61,6 +61,15 @@ class Comment
     private $updatedAt;
 
     /**
+     * Comment constructor.
+     */
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
+    }
+
+    /**
      * @return int
      */
     public function getId(): int
