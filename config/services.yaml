@@ -30,19 +30,10 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\Repository\PostRepository:
-        arguments:
-            $registry: '@doctrine'
-            $cacheDriver: '@snc_redis.doctrine'
-            $useCache: true
-    App\Repository\CategoryRepository:
-        arguments:
-            $registry: '@doctrine'
-            $useCache: true
-    App\DataFixtures\CategoryFixtures:
-        arguments:
-            $cacheDriver: '@snc_redis.doctrine'
-
-    snc_second_level_cache:
-        class: '%snc_redis.doctrine_cache_predis.class%'
-        arguments: [ '@snc_redis.doctrine' ]
+framework:
+    cache:
+        app: app_cache
+        pools:
+            app_cache:
+                adapter: cache.adapter.redis
+                provider: '%env(resolve:REDIS_URL)%'
