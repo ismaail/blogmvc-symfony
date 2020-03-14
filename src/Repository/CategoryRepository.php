@@ -18,21 +18,13 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 class CategoryRepository extends ServiceEntityRepository
 {
     /**
-     * @var bool
-     */
-    private $useCache;
-
-    /**
      * CategoryRepository constructor.
      *
      * @param \Doctrine\Persistence\ManagerRegistry $registry
-     * @param bool $useCache
      */
-    public function __construct(ManagerRegistry $registry, bool $useCache)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Category::class);
-
-        $this->useCache = $useCache;
     }
 
     /**
@@ -43,9 +35,7 @@ class CategoryRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('c')
             ->getQuery();
 
-        if ($this->useCache) {
-            $query->enableResultCache(null, 'categories_all');
-        }
+        $query->enableResultCache(null, 'categories_all');
 
         return $query->getResult();
     }

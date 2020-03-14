@@ -4,10 +4,11 @@ namespace App\Repository;
 
 use App\Entity\Post;
 use App\Entity\Comment;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * Class PostRepository
@@ -22,28 +23,21 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 class PostRepository extends ServiceEntityRepository
 {
     /**
-     * @var bool
+     * @var \Symfony\Contracts\Cache\CacheInterface
      */
-    private $useCache;
-
-    /**
-     * @var \Predis\Client
-     */
-    private $cacheDriver;
+    private CacheInterface $cache;
 
     /**
      * PostRepository constructor.
      *
      * @param \Doctrine\Persistence\ManagerRegistry $registry
-     * @param \Predis\Client $cacheDriver
-     * @param bool $useCache
+     * @param \Symfony\Contracts\Cache\CacheInterface $cache
      */
-    public function __construct(ManagerRegistry $registry, $cacheDriver, bool $useCache)
+    public function __construct(ManagerRegistry $registry, CacheInterface $cache)
     {
         parent::__construct($registry, Post::class);
 
-        $this->cacheDriver = $cacheDriver;
-        $this->useCache = $useCache;
+        $this->cache = $cache;
     }
 
     /**
@@ -66,9 +60,7 @@ class PostRepository extends ServiceEntityRepository
 
         $query = $qb->getQuery();
 
-        if ($this->useCache) {
-            $query->enableResultCache(null, 'posts_all');
-        }
+        $query->enableResultCache(null, 'posts_all');
 
         return new Paginator($query);
     }
@@ -114,9 +106,7 @@ class PostRepository extends ServiceEntityRepository
             ->orderBy('m.createdAt', 'desc')
             ->getQuery();
 
-        if ($this->useCache) {
-            $query->enableResultCache(null, 'posts_all');
-        }
+        $query->enableResultCache(null, 'posts_all');
 
         $post = $query->getOneOrNullResult();
 
@@ -140,9 +130,7 @@ class PostRepository extends ServiceEntityRepository
             ->setMaxResults($cout)
             ->getQuery();
 
-        if ($this->useCache) {
-            $query->enableResultCache(null, 'posts_latest');
-        }
+        $query->enableResultCache(null, 'posts_latest');
 
         return $query->getresult();
     }
@@ -160,6 +148,6 @@ class PostRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($comment);
         $this->getEntityManager()->flush();
 
-        $this->cacheDriver->expire('[posts_all][1]', 0);
+        $this->cache->delete('[posts_all][1]');
     }
 }

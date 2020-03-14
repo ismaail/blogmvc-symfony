@@ -4,8 +4,8 @@ namespace App\DataFixtures;
 
 use Faker;
 use App\Entity\Category;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * Class CategoryFixtures
@@ -21,17 +21,14 @@ class CategoryFixtures extends Fixture
 
     /**
      * CategoryFixtures constructor.
-     *
-     * @param \Predis\Client $cacheDriver
      */
-    public function __construct($cacheDriver)
+    public function __construct()
     {
         $this->faker = Faker\Factory::create();
-        $cacheDriver->flushall();
     }
 
     /**
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param \Doctrine\Persistence\ObjectManager $manager
      */
     public function load(ObjectManager $manager)
     {
