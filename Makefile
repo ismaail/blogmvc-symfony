@@ -81,8 +81,7 @@ cache-clear:
 	docker exec -it -u $(UID) $(CONTAINER_FPM) php bin/console cache:clear 2>/dev/null || true && \
 	docker exec -it -u $(UID) $(CONTAINER_FPM) php bin/console doctrine:cache:clear-query 2>/dev/null || true && \
 	docker exec -it -u $(UID) $(CONTAINER_FPM) php bin/console doctrine:cache:clear-metadata 2>/dev/null || true && \
-	docker exec -it -u $(UID) $(CONTAINER_FPM) php bin/console doctrine:cache:clear-result 2>/dev/null || true && \
-	docker exec -it -u $(UID) $(CONTAINER_FPM) php bin/console redis:flushdb -n 2>/dev/null || true
+	docker exec -it -u $(UID) $(CONTAINER_FPM) php bin/console doctrine:cache:clear-result 2>/dev/null || true
 
 nginx-reload:
 	docker kill -s HUP $(CONTAINER_NGINX) 2>/dev/null || true
