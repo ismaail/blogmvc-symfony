@@ -29,10 +29,10 @@ doctrine:
                 alias: App
         metadata_cache_driver:
             type: pool
-            pool: app_cache
+            pool: cache.app
         query_cache_driver:
             type: pool
-            pool: app_cache
+            pool: cache.app
         result_cache_driver:
             type: pool
-            pool: app_cache
+            pool: cache.app
