@@ -4,11 +4,11 @@ namespace App\Repository;
 
 use App\Entity\Post;
 use App\Entity\Comment;
+use Psr\Cache\CacheItemPoolInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * Class PostRepository
@@ -23,17 +23,17 @@ use Symfony\Contracts\Cache\CacheInterface;
 class PostRepository extends ServiceEntityRepository
 {
     /**
-     * @var \Symfony\Contracts\Cache\CacheInterface
+     * @var \Psr\Cache\CacheItemPoolInterface
      */
-    private CacheInterface $cache;
+    private CacheItemPoolInterface $cache;
 
     /**
      * PostRepository constructor.
      *
      * @param \Doctrine\Persistence\ManagerRegistry $registry
-     * @param \Symfony\Contracts\Cache\CacheInterface $cache
+     * @param \Psr\Cache\CacheItemPoolInterface $cache
      */
-    public function __construct(ManagerRegistry $registry, CacheInterface $cache)
+    public function __construct(ManagerRegistry $registry, CacheItemPoolInterface $cache)
     {
         parent::__construct($registry, Post::class);
 
@@ -148,6 +148,6 @@ class PostRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($comment);
         $this->getEntityManager()->flush();
 
-        $this->cache->delete('[posts_all][1]');
+        $this->cache->deleteItem(urlencode('[posts_all][1]'));
     }
 }
