@@ -3,6 +3,7 @@
 namespace App\Tests\Repository;
 
 use App\Entity\Post;
+use App\Entity\Comment;
 use App\Tests\EntityCreator;
 use App\Tests\DatabaseTestCase;
 
@@ -154,5 +155,30 @@ class PostRepositoryTest extends DatabaseTestCase
 
         $post = $this->postRepository->find(1);
         $this->assertInstanceOf(\DateTime::class, $post->getCreatedAt());
+    }
+
+    /**
+     * @test
+     */
+    public function it_create_new_comment()
+    {
+        $post = $this->createPost();
+        $this->getEntityManager()->flush();
+
+        $comment = new Comment();
+        $comment->setUsername('doe')
+            ->setEmail('doe@example.com')
+            ->setContent('some comment content')
+            ;
+
+        $this->postRepository->addComment($post, $comment);
+
+        $createdPost = $this->postRepository->find(1);
+        $comments = $createdPost->getComments();
+
+        $this->assertCount(1, $comments);
+        $this->assertSame('doe', $comments[0]->getUsername());
+        $this->assertSame('doe@example.com', $comments[0]->getEmail());
+        $this->assertSame('some comment content', $comments[0]->getContent());
     }
 }

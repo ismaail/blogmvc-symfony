@@ -5,3 +5,10 @@ services:
     app.repository.category_repository:
         alias: App\Repository\CategoryRepository
         public: true
+
+framework:
+    cache:
+        pools:
+            app_cache:
+                adapter: cache.adapter.array
+                provider: ~

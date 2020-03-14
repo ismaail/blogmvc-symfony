@@ -27,11 +27,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'App\Entity'
                 alias: App
-        # enable metadata caching
         metadata_cache_driver:
             type: pool
-            pool: snc_redis
-        # enable query caching
+            pool: app_cache
         query_cache_driver:
             type: pool
-            pool: snc_redis
+            pool: app_cache
+        result_cache_driver:
+            type: pool
+            pool: app_cache
