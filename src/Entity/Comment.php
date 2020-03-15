@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @package App\Entity
  *
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
+ * @ORM\EntityListeners({"App\Entity\CommentListener"})
  */
 class Comment
 {
