@@ -39,6 +39,7 @@ services:
            - COMPOSER_MEMORY_LIMIT=-1
         volumes:
             - ".:/home/docker:rw"
+            - "/home/ismaail/.cache/composer:/home/www-data/.composer/cache"
 #            - "./docker/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini"
         working_dir: "/home/docker"
         links:
