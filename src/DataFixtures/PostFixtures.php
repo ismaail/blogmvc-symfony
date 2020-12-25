@@ -6,8 +6,8 @@ use Faker;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Entity\Category;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 /**
@@ -36,7 +36,7 @@ class PostFixtures extends Fixture implements DependentFixtureInterface
     }
 
     /**
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param \Doctrine\Persistence\ObjectManager $manager
      *
      * @throws \Exception
      */

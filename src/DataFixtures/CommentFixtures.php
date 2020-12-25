@@ -4,8 +4,8 @@ namespace App\DataFixtures;
 
 use App\Entity\Post;
 use App\Entity\Comment;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 /**
@@ -31,7 +31,7 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
     /**
      * Load data fixtures with the passed EntityManager
      *
-     * @param ObjectManager $manager
+     * @param \Doctrine\Persistence\ObjectManager $manager
      */
     public function load(ObjectManager $manager)
     {
