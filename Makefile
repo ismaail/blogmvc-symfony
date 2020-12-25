@@ -56,7 +56,7 @@ tests:
 	docker exec -it \
 		-u $(UID) \
 		$(CONTAINER_FPM) \
-		./bin/phpunit \
+		./bin/phpunit --do-not-cache-result \
 		2>/dev/null || true
 
 
