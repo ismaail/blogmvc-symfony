@@ -50,7 +50,7 @@ class DatabaseTestCase extends WebTestCase
     /**
      * Create Doctrine Schemas.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -94,7 +94,7 @@ class DatabaseTestCase extends WebTestCase
     /**
      * Drop Doctrine Schemas.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if (! empty($this->metadata)) {
             $tool = new SchemaTool($this->getEntityManager());
