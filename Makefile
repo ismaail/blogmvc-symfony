@@ -1,4 +1,4 @@
-.PHONY: up start stop down reboot console composer migrate seed tests tests-report tests-failing nginx-reload fix-permissions
+.PHONY: up start stop down reboot console composer migrate seed tests tests-report tests-failing nginx-reload fix-permissions recipes recipe-update
 
 # Set dir of Makefile to a variable to use later
 MAKEPATH := $(abspath $(lastword $(MAKEFILE_LIST)))
@@ -92,3 +92,18 @@ fix-permissions:
 	docker exec -it $(CONTAINER_FPM) chown -R 1000:100 ./bin 2>/dev/null || true && \
 	docker exec -it $(CONTAINER_FPM) find ./var -type d -exec chmod 755 {} \; 2>/dev/null || true && \
 	docker exec -it $(CONTAINER_FPM) find ./vendor -type d -exec chmod 755 {} \; 2>/dev/null || true
+
+recipes:
+	docker exec -it \
+	-u $(UID) \
+	$(CONTAINER_FPM) \
+	composer recipes \
+	2>/dev/null || true
+
+name=""
+recipe-update:
+	docker exec -it \
+	-u $(UID) \
+	$(CONTAINER_FPM) \
+	composer recipes:install $(name) --force -v \
+	2>/dev/null || true
