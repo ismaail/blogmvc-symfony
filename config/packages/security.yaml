@@ -18,6 +18,7 @@ security:
             security: false
         main:
             anonymous: true
+            lazy: true
             provider: administrators
             form_login:
                 login_path: login
