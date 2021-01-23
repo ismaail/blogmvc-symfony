@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Symfony\Component\Cache\DoctrineProvider;
 use Doctrine\Common\Cache\Cache;
 
 /**
