@@ -2,7 +2,8 @@
 
 namespace App\Entity;
 
-use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Symfony\Component\Cache\DoctrineProvider;
+use Doctrine\Common\Cache\Cache;
 
 /**
  * Class CommentListener
@@ -11,18 +12,18 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
 class CommentListener
 {
     /**
-     * @var \Symfony\Component\Cache\Adapter\AdapterInterface
+     * @var \Doctrine\Common\Cache\Cache
      */
-    private AdapterInterface $cache;
+    private Cache $cacheProvider;
 
     /**
      * CommentListener constructor.
      *
-     * @param \Symfony\Component\Cache\Adapter\AdapterInterface $cache
+     * @param \Doctrine\Common\Cache\Cache $cacheProvider
      */
-    public function __construct(AdapterInterface $cache)
+    public function __construct(Cache $cacheProvider)
     {
-        $this->cache = $cache;
+        $this->cacheProvider = $cacheProvider;
     }
 
     /**
