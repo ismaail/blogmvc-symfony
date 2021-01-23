@@ -27,10 +27,12 @@ class CommentListener
     }
 
     /**
-     * @throws \Psr\Cache\InvalidArgumentException
+     * @param \App\Entity\Comment $comment
      */
-    public function postPersist(): void
+    public function postPersist(Comment $comment): void
     {
-        $this->cache->deleteItem(urlencode('[post_by_slug][1]'));
+        $cachekey = 'post_by_slug_' . $comment->getPost()->getSlug();
+
+        $this->cacheProvider->delete($cachekey);
     }
 }
