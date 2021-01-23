@@ -74,12 +74,12 @@ class DefaultController extends AbstractController
 
     /**
      * @param string $slug
+     * @param \App\Repository\PostRepository $postRepository
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function show(string $slug)
+    public function show(string $slug, PostRepository $postRepository)
     {
-        $postRepository = $this->getDoctrine()->getRepository(Post::class);
         $post = $postRepository->findBySlug($slug);
 
         $form = $this->createForm(CommentType::class)->createView();
