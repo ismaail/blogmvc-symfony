@@ -97,7 +97,7 @@ class PostRepository extends ServiceEntityRepository
             ->orderBy('m.createdAt', 'desc')
             ->getQuery();
 
-        $query->enableResultCache(null, 'post_by_slug');
+        $query->enableResultCache(null, 'post_by_slug_' . $slug);
 
         $post = $query->getOneOrNullResult();
 
