@@ -81,14 +81,14 @@ class DatabaseTestCase extends WebTestCase
      * @throws SchemaException
      * @throws \Doctrine\ORM\Tools\ToolsException
      */
-    protected function generateSchema()
+    protected function generateSchema(): void
     {
-        if (! empty($this->metadata)) {
-            $tool = new SchemaTool($this->getEntityManager());
-            $tool->createSchema($this->metadata);
-        } else {
+        if (empty($this->metadata)) {
             throw new SchemaException('No Metadata Classes to process.');
         }
+
+        $tool = new SchemaTool($this->getEntityManager());
+        $tool->createSchema($this->metadata);
     }
 
     /**
@@ -96,12 +96,12 @@ class DatabaseTestCase extends WebTestCase
      */
     protected function tearDown(): void
     {
-        if (! empty($this->metadata)) {
-            $tool = new SchemaTool($this->getEntityManager());
-            $tool->dropSchema($this->metadata);
-        } else {
+        if (empty($this->metadata)) {
             throw new SchemaException('No Metadata Classes to process.');
         }
+
+        $tool = new SchemaTool($this->getEntityManager());
+        $tool->dropSchema($this->metadata);
 
         parent::tearDown();
     }
