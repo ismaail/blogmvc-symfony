@@ -10,9 +10,9 @@ use App\Tests\DatabaseTestCase;
  *
  * @package App\Tests\Entity
  *
- * @codingStandardsIgnoreFile
  * @SuppressWarnings(PHPMD.CamelCaseMethodName)
  * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+ * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 class PostTest extends DatabaseTestCase
 {
@@ -23,7 +23,7 @@ class PostTest extends DatabaseTestCase
      */
     public function it_creates_new_Post_with_the_correct_Slug()
     {
-        $post = $this->createPost(['title' => 'Some Title 123']);
+        $post = $this->makePost(['title' => 'Some Title 123']);
         $this->getEntityManager()->flush();
 
         $this->assertEquals('some-title-123', $post->getSlug(), 'Wrong Post slug value.');

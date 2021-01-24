@@ -12,9 +12,9 @@ use App\Tests\DatabaseTestCase;
  *
  * @package App\Tests
  *
- * @codingStandardsIgnoreFile
  * @SuppressWarnings(PHPMD.CamelCaseMethodName)
  * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+ * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 class PostRepositoryTest extends DatabaseTestCase
 {
@@ -41,12 +41,12 @@ class PostRepositoryTest extends DatabaseTestCase
     public function it_returns_paginated_posts()
     {
         // Preparations
-        $this->createPost();
-        $this->createPost();
+        $this->makePost();
+        $this->makePost();
         $this->getEntityManager()->flush();
 
         // Actions
-        $paginator = $this->postRepository->paginate(1, 10);
+        $paginator = $this->postRepository->paginate();
 
         // Assertions
         $this->assertEquals(2, $paginator->count(), 'Wrong Post Paginator count.');
@@ -58,12 +58,12 @@ class PostRepositoryTest extends DatabaseTestCase
     public function it_returns_paginated_post_by_category()
     {
         // Preparations
-        $category1 = $this->createCategory(['name' => 'Cat 1']);
-        $category2 = $this->createCategory(['name' => 'Cat 2']);
+        $category1 = $this->makeCategory(['name' => 'Cat 1']);
+        $category2 = $this->makeCategory(['name' => 'Cat 2']);
 
-        $this->createPost([], $category1);
-        $this->createPost([], $category1);
-        $this->createPost([], $category2);
+        $this->makePost([], $category1);
+        $this->makePost([], $category1);
+        $this->makePost([], $category2);
 
         $this->getEntityManager()->flush();
 
@@ -92,12 +92,12 @@ class PostRepositoryTest extends DatabaseTestCase
     public function it_returns_paginated_post_by_author()
     {
         // Preparations
-        $author1 = $this->createUser(['username' => 'user_A']);
-        $author2 = $this->createUser(['username' => 'user_B']);
+        $author1 = $this->makeUser(['username' => 'user_A']);
+        $author2 = $this->makeUser(['username' => 'user_B']);
 
-        $this->createPost([], null, $author1);
-        $this->createPost([], null, $author2);
-        $this->createPost([], null, $author2);
+        $this->makePost([], null, $author1);
+        $this->makePost([], null, $author2);
+        $this->makePost([], null, $author2);
 
         $this->getEntityManager()->flush();
 
@@ -125,7 +125,7 @@ class PostRepositoryTest extends DatabaseTestCase
      */
     public function it_returns_a_single_post_by_slug()
     {
-        $this->createPost(['title' => 'Some Title 123']);
+        $this->makePost(['title' => 'Some Title 123']);
         $this->getEntityManager()->flush();
 
         $foundPost = $this->postRepository->findBySlug('some-title-123');
@@ -150,7 +150,7 @@ class PostRepositoryTest extends DatabaseTestCase
      */
     public function createdAt_datetime_is_auto_generated()
     {
-        $this->createPost();
+        $this->makePost();
         $this->getEntityManager()->flush();
 
         $post = $this->postRepository->find(1);
@@ -162,7 +162,7 @@ class PostRepositoryTest extends DatabaseTestCase
      */
     public function it_create_new_comment()
     {
-        $post = $this->createPost();
+        $post = $this->makePost();
         $this->getEntityManager()->flush();
 
         $comment = new Comment();

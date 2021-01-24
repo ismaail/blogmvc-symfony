@@ -19,7 +19,7 @@ class DatabaseTestCase extends WebTestCase
     protected static $container;
 
     /**
-     * @var \Symfony\Bundle\FrameworkBundle\Client
+     * @var \Symfony\Bundle\FrameworkBundle\KernelBrowser
      */
     protected $client;
 

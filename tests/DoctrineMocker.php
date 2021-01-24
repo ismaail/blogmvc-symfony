@@ -8,7 +8,7 @@ namespace App\Tests;
  * @package AppBundle\Traits
  *
  * @mixin \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
- * @property \Symfony\Bundle\FrameworkBundle\Client $client
+ * @property \Symfony\Bundle\FrameworkBundle\KernelBrowser $client
  */
 trait DoctrineMocker
 {
@@ -16,13 +16,13 @@ trait DoctrineMocker
      * @param array $items
      * @param int $maxResult
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject|\Doctrine\ORM\Tools\Pagination\Paginator
+     * @return \PHPUnit\Framework\MockObject\MockObject|\Doctrine\ORM\Tools\Pagination\Paginator
      */
     public function mockPaginator(array $items, int $maxResult)
     {
         $mock = $this->getMockBuilder(\Doctrine\ORM\Tools\Pagination\Paginator::class)
             ->disableOriginalConstructor()
-            ->setMethods(['count', 'getIterator', 'getQuery'])
+            ->onlyMethods(['count', 'getIterator', 'getQuery'])
             ->getMock();
 
         $query = new \Doctrine\ORM\Query($this->mockEntityManager());
@@ -36,13 +36,13 @@ trait DoctrineMocker
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|\Doctrine\ORM\EntityManager
+     * @return \PHPUnit\Framework\MockObject\MockObject|\Doctrine\ORM\EntityManager
      */
     public function mockEntityManager()
     {
         $mock = $this->getMockBuilder(\Doctrine\ORM\EntityManager::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getConfiguration'])
+            ->onlyMethods(['getConfiguration'])
             ->getMock()
         ;
 
@@ -53,13 +53,13 @@ trait DoctrineMocker
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|\Doctrine\ORM\Configuration
+     * @return \PHPUnit\Framework\MockObject\MockObject|\Doctrine\ORM\Configuration
      */
     public function mockConfiguration()
     {
         $mock = $this->getMockBuilder(\Doctrine\ORM\Configuration::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getDefaultQueryHints', 'isSecondLevelCacheEnabled'])
+            ->onlyMethods(['getDefaultQueryHints', 'isSecondLevelCacheEnabled'])
             ->getMock();
 
         $mock->method('getDefaultQueryHints')

@@ -4,6 +4,7 @@ namespace App\Tests;
 
 use App\Entity\Post;
 use App\Entity\User;
+use App\Entity\Comment;
 use App\Entity\Category;
 
 /**
@@ -21,10 +22,8 @@ trait EntityCreator
      * @param array $input
      *
      * @return \App\Entity\Category
-     *
-     * @throws \Doctrine\ORM\ORMException
      */
-    public function createCategory(array $input = []): Category
+    public function makeCategory(array $input = []): Category
     {
         $category = new Category();
         $category->setName($input['name'] ?? 'Category Name');
@@ -38,13 +37,11 @@ trait EntityCreator
      * @param array $input
      *
      * @return \App\Entity\User
-     *
-     * @throws \Doctrine\ORM\ORMException
      */
-    public function createUser(array $input = []): User
+    public function makeUser(array $input = []): User
     {
         $author = (new User())
-            ->setUsername($input['username'] ?? 'user_'.self::$userCounter++)
+            ->setUsername($input['username'] ?? 'user_' . self::$userCounter++)
             ->setPassword($input['password'] ?? 'password')
             ->setRoles([User::ROLE_ADMIN])
             ;
@@ -60,17 +57,15 @@ trait EntityCreator
      * @param \App\Entity\User|null $author
      *
      * @return \App\Entity\Post
-     *
-     * @throws \Doctrine\ORM\ORMException
      */
-    public function createPost(array $input = [], ?Category $category = null, ?User $author = null): Post
+    public function makePost(array $input = [], ?Category $category = null, ?User $author = null): Post
     {
         if (null === $category) {
-            $category = $this->createCategory();
+            $category = $this->makeCategory();
         }
 
         if ($author === null) {
-            $author = $this->createUser();
+            $author = $this->makeUser();
         }
 
         $post = new Post();
@@ -88,5 +83,28 @@ trait EntityCreator
         $this->getEntityManager()->persist($post);
 
         return $post;
+    }
+
+    /**
+     * @param array $input
+     *
+     * @return \App\Entity\Comment
+     */
+    public function makeComment(array $input = []): Comment
+    {
+        $comment = new Comment();
+        $username = 'username_' . self::$userCounter++;
+
+        $comment
+            ->setUsername($input['username'] ?? $username)
+            ->setEmail($input['email'] ?? $username . '@example.com')
+            ->setCreatedAt($input['created_at'] ?? new \DateTime())
+            ->setUpdatedAt($input['updated_at'] ?? new \DateTime())
+            ->setContent($input['content'] ?? 'Some Comment #' . self::$userCounter)
+            ;
+
+        $this->getEntityManager()->persist($comment);
+
+        return $comment;
     }
 }
