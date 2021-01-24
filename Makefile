@@ -48,6 +48,7 @@ cmd=""
 composer:
 	docker exec -it \
 		-u $(UID) \
+		-e XDEBUG_MODE=off \
 		$(CONTAINER_FPM) \
 		composer $(cmd) \
 		2>/dev/null || true
