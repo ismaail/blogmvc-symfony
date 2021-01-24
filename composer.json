@@ -1,8 +1,8 @@
 {
-    "name": "symfony4/demo",
+    "name": "ismaail/blog-mvc",
     "type": "project",
     "license": "MIT",
-    "description": "A skeleton to start a new Symfony website",
+    "description": "Blog MVC - Symfony 4/5",
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
