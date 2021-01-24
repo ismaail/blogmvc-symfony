@@ -91,6 +91,7 @@ fix-permissions:
 	docker exec -it $(CONTAINER_FPM) chown -R 1000:100 ./var/cache 2>/dev/null || true && \
 	docker exec -it $(CONTAINER_FPM) chown -R 1000:100 ./bin 2>/dev/null || true && \
 	docker exec -it $(CONTAINER_FPM) find ./var -type d -exec chmod 755 {} \; 2>/dev/null || true && \
+	docker exec -it $(CONTAINER_FPM) find ./bin -type d -exec chmod 755 {} \; 2>/dev/null || true && \
 	docker exec -it $(CONTAINER_FPM) find ./vendor -type d -exec chmod 755 {} \; 2>/dev/null || true
 
 recipes:
