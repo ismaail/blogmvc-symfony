@@ -1,4 +1,4 @@
-# Blog MVC - Symfony 5
+# Blog MVC - Symfony
 
 [![Build Status](https://travis-ci.org/ismaail/blogmvc-sf4.svg?branch=develop)](https://travis-ci.org/ismaail/blogmvc-sf4)
 
