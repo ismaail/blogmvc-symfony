@@ -29,6 +29,14 @@ final class Version20180820004120 extends AbstractMigration
     }
 
     /**
+     * @return bool
+     */
+    public function isTransactional(): bool
+    {
+        return false;
+    }
+
+    /**
      * @param \Doctrine\DBAL\Schema\Schema $schema
      *
      * @throws \Doctrine\DBAL\DBALException
