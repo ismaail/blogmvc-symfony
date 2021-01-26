@@ -1,10 +1,10 @@
 # Blog MVC - Symfony
 
-[![Build Status](https://travis-ci.org/ismaail/blogmvc-sf4.svg?branch=develop)](https://travis-ci.org/ismaail/blogmvc-sf4)
+[![Build Status](https://api.travis-ci.com/ismaail/blogmvc-symfony.svg?branch=develop&status=canceled)](https://www.travis-ci.com/github/ismaail/blogmvc-symfony)
 
 ##### Requirements
 
-- PHP 7.4
+- PHP 8.0
 
 ##### Installation
 
