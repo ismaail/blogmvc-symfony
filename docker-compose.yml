@@ -3,7 +3,7 @@ version: "3"
 services:
     database:
         container_name: blogmvc_database
-        image: mysql:5.7
+        image: mysql:8.0
         env_file: ./docker/mysql/.env
         volumes:
             - blogmvc-data-mysql:/var/lib/mysql
@@ -34,9 +34,7 @@ services:
 
     fpm:
         container_name: blogmvc_fpm
-        image: ismaail/php:7.4-alpine-fpm-dev
-        environment:
-           - COMPOSER_MEMORY_LIMIT=-1
+        image: ismaail/php:8.0-alpine-fpm-dev
         volumes:
             - ".:/home/docker:rw"
             - "/home/ismaail/.cache/composer:/home/www-data/.composer/cache"
