@@ -19,10 +19,12 @@ class Kernel extends BaseKernel
         $c->import('../config/{packages}/*.yaml');
         $c->import('../config/{packages}/' . $this->environment . '/*.yaml');
 
+        $path = \dirname(__DIR__) . '/config/services.php';
+
         if (is_file(\dirname(__DIR__) . '/config/services.yaml')) {
             $c->import('../config/services.yaml');
             $c->import('../config/{services}_' . $this->environment . '.yaml');
-        } elseif (is_file($path = \dirname(__DIR__) . '/config/services.php')) {
+        } elseif (is_file($path)) {
             (require $path)($c->withPath($path), $this);
         }
     }
@@ -35,9 +37,11 @@ class Kernel extends BaseKernel
         $routes->import('../config/{routes}/' . $this->environment . '/*.yaml');
         $routes->import('../config/{routes}/*.yaml');
 
+        $path = \dirname(__DIR__) . '/config/routes.php';
+
         if (is_file(\dirname(__DIR__) . '/config/routes.yaml')) {
             $routes->import('../config/routes.yaml');
-        } elseif (is_file($path = \dirname(__DIR__) . '/config/routes.php')) {
+        } elseif (is_file($path)) {
             (require $path)($routes->withPath($path), $this);
         }
     }
