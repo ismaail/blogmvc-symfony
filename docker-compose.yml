@@ -4,6 +4,7 @@ services:
     database:
         container_name: blogmvc_database
         image: mysql:8.0
+        command: --default-authentication-plugin=mysql_native_password
         env_file: ./docker/mysql/.env
         volumes:
             - blogmvc-data-mysql:/var/lib/mysql
