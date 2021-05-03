@@ -22,45 +22,45 @@ class Comment
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      */
-    private $username;
+    private string $username;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      * @Assert\Email()
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Post", inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $post;
+    private Post $post;
 
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank()
      * @Assert\Length(min="3")
      */
-    private $content;
+    private string $content;
 
     /**
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
-    private $createdAt;
+    private \DateTimeInterface $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="update")
      */
-    private $updatedAt;
+    private \DateTimeInterface $updatedAt;
 
     /**
      * Comment constructor.
@@ -80,9 +80,9 @@ class Comment
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getUsername(): ?string
+    public function getUsername(): string
     {
         return $this->username;
     }
@@ -100,9 +100,9 @@ class Comment
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -128,7 +128,7 @@ class Comment
     }
 
     /**
-     * @param \App\Entity\Post|null $post
+     * @param \App\Entity\Post $post
      *
      * @return \App\Entity\Comment
      */
@@ -140,9 +140,9 @@ class Comment
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getContent(): ?string
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -206,6 +206,6 @@ class Comment
     {
         $hash = md5($this->email);
 
-        return "https://www.gravatar.com/avatar/{$hash}?d=mm&s=100";
+        return "https://www.gravatar.com/avatar/$hash?d=mm&s=100";
     }
 }

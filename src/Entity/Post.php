@@ -21,41 +21,41 @@ class Post
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer", options={"unsigned": true})
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private string $title;
 
     /**
      * @Gedmo\Slug(fields={"title"}, updatable=false)
      * @ORM\Column(type="string", length=255, unique=true)
      */
-    private $slug;
+    private string $slug;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $content;
+    private string $content;
 
     /**
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
-    private $createdAt;
+    private \DateTimeInterface $createdAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="posts", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $category;
+    private Category $category;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="posts", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $author;
+    private User $author;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="post", orphanRemoval=true)
@@ -71,7 +71,7 @@ class Post
     }
 
     /**
-     * @return int|null
+     * @return int
      */
     public function getId(): int
     {
@@ -79,7 +79,7 @@ class Post
     }
 
     /**
-     * @return null|string
+     * @return string
      */
     public function getTitle(): string
     {
@@ -159,7 +159,7 @@ class Post
     }
 
     /**
-     * @return \App\Entity\Category|null
+     * @return \App\Entity\Category
      */
     public function getCategory(): Category
     {
@@ -199,7 +199,7 @@ class Post
     }
 
     /**
-     * @return Collection|Comment[]
+     * @return Collection
      */
     public function getComments(): Collection
     {

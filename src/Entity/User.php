@@ -26,17 +26,17 @@ class User implements UserInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer", options={"unsigned": true})
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      */
-    private $username;
+    private string $username;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $password;
+    private string $password;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="author")
@@ -57,17 +57,17 @@ class User implements UserInterface
     }
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
-     * @return null|string
+     * @return string
      */
-    public function getUsername(): ?string
+    public function getUsername(): string
     {
         return $this->username;
     }
@@ -85,9 +85,9 @@ class User implements UserInterface
     }
 
     /**
-     * @return null|string
+     * @return string
      */
-    public function getPassword(): ?string
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -105,7 +105,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Post[]
+     * @return Collection
      */
     public function getPosts(): Collection
     {
