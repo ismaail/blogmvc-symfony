@@ -31,7 +31,7 @@ services:
 
     App\Entity\CommentListener:
         arguments:
-            $cacheProvider: '@doctrine.orm.cache.provider.cache.app'
+            $cacheProvider: '@doctrine.orm.default_result_cache'
         tags:
             - { name: doctrine.orm.entity_listener }
 

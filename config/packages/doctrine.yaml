@@ -22,9 +22,6 @@ doctrine:
                 dir: "%kernel.project_dir%/vendor/gedmo/doctrine-extensions/src/Tree/Entity"
                 alias: GedmoTree # (optional) it will default to the name set for the mapping
                 is_bundle: false
-        metadata_cache_driver:
-            type: pool
-            pool: cache.app
         query_cache_driver:
             type: pool
             pool: cache.app
