@@ -7,25 +7,29 @@ use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
+/**
+ * Class Kernel
+ * @package App
+ */
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
     /**
-     * @param \Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator $c
+     * @param \Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator $container
      */
-    protected function configureContainer(ContainerConfigurator $c): void
+    protected function configureContainer(ContainerConfigurator $container): void
     {
-        $c->import('../config/{packages}/*.yaml');
-        $c->import('../config/{packages}/' . $this->environment . '/*.yaml');
+        $container->import('../config/{packages}/*.yaml');
+        $container->import('../config/{packages}/' . $this->environment . '/*.yaml');
 
         $path = \dirname(__DIR__) . '/config/services.php';
 
         if (is_file(\dirname(__DIR__) . '/config/services.yaml')) {
-            $c->import('../config/services.yaml');
-            $c->import('../config/{services}_' . $this->environment . '.yaml');
+            $container->import('../config/services.yaml');
+            $container->import('../config/{services}_' . $this->environment . '.yaml');
         } elseif (is_file($path)) {
-            (require $path)($c->withPath($path), $this);
+            (require $path)($container->withPath($path), $this);
         }
     }
 
