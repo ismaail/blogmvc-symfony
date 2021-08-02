@@ -24,6 +24,8 @@ Fill the database with data:
 
 ```php bin/console doctrine:fixtures:load```
 
+> Need to clear the cache before sedding the database.
+
 ##### Tests
 
 ```php bin/phpunit```
