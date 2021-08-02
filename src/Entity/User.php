@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
  * Class User
@@ -14,12 +15,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @const string
      */
     public const ROLE_ADMIN = 'ROLE_ADMIN';
+    public const ROLE_MEMBER = 'ROLE_MEMBER';
 
     /**
      * @ORM\Id()
@@ -192,5 +194,13 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserIdentifier(): string
+    {
+        return $this->username;
     }
 }
