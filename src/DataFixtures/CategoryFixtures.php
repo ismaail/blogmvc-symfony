@@ -32,7 +32,7 @@ class CategoryFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        foreach ($this->create(10) as $category) {
+        foreach ($this->create() as $category) {
             $manager->persist($category);
         }
 
@@ -40,18 +40,14 @@ class CategoryFixtures extends Fixture
     }
 
     /**
-     * @param int $number
-     *
      * @return \Generator
      */
-    private function create(int $number)
+    private function create()
     {
-        for ($i = 0; $i < $number; $i++) {
-            $category = new Category();
-            $category->setName($this->faker->words(random_int(1, 2), true));
-            $category->setPostCount(random_int(10, 100));
-
-            yield $category;
+        for ($i = 0; $i < 10; $i++) {
+            yield (new Category())
+                ->setName((string)$this->faker->words(random_int(1, 2), true))
+                ->setPostCount(random_int(10, 100));
         }
     }
 }
