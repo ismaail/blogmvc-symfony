@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
@@ -23,17 +25,9 @@ final class Version20180820004120 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('CREATE TABLE user (id INT UNSIGNED AUTO_INCREMENT NOT NULL, username VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, UNIQUE INDEX UNIQ_8D93D649F85E0677 (username), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE post ADD author_id INT UNSIGNED NOT NULL');
+        $this->addSql('ALTER TABLE post ADD author_id INT UNSIGNED NOT NULL AFTER category_id');
         $this->addSql('ALTER TABLE post ADD CONSTRAINT FK_5A8A6C8DF675F31B FOREIGN KEY (author_id) REFERENCES user (id)');
         $this->addSql('CREATE INDEX IDX_5A8A6C8DF675F31B ON post (author_id)');
-    }
-
-    /**
-     * @return bool
-     */
-    public function isTransactional(): bool
-    {
-        return false;
     }
 
     /**
