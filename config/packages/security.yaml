@@ -1,15 +1,18 @@
 security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
 
+    # https://symfony.com/doc/current/security/experimental_authenticators.html
+    enable_authenticator_manager: true
+
     providers:
         administrators:
             entity:
                 class: App\Entity\User
                 property: username
 
-    encoders:
+    password_hashers:
         App\Entity\User:
-            algorithm: bcrypt
+            algorithm: auto
             cost: 10
 
     firewalls:
@@ -17,7 +20,6 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: true
             lazy: true
             provider: administrators
             form_login:
