@@ -37,10 +37,8 @@ class PostFixtures extends Fixture implements DependentFixtureInterface
 
     /**
      * @param \Doctrine\Persistence\ObjectManager $manager
-     *
-     * @throws \Exception
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $categories = $manager->getRepository(Category::class)->findAll();
         $this->authors = $manager->getRepository(User::class)->findAll();
@@ -58,27 +56,22 @@ class PostFixtures extends Fixture implements DependentFixtureInterface
      * @param \App\Entity\Category $category
      *
      * @return \Generator
-     * @throws \Exception
      */
-    public function create(Category $category)
+    private function create(Category $category)
     {
         for ($i = 0; $i < $category->getPostCount(); $i++) {
-            $post = new Post();
-            $post
+            yield (new Post())
                 ->setCategory($category)
+                ->setAuthor($this->randomAuthor())
                 ->setTitle($this->faker->words(random_int(4, 10), true))
                 ->setContent($this->faker->sentences(random_int(5, 14), true))
                 ->setCreatedAt($this->faker->dateTimeBetween('-24 months'))
-                ->setAuthor($this->randomAuthor())
-            ;
-
-            yield $post;
+                ;
         }
     }
 
     /**
      * @return \App\Entity\User
-     * @throws \Exception
      */
     private function randomAuthor(): User
     {

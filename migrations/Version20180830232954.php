@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
@@ -23,14 +25,6 @@ final class Version20180830232954 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE user ADD roles JSON NOT NULL COMMENT \'(DC2Type:json_array)\'');
-    }
-
-    /**
-     * @return bool
-     */
-    public function isTransactional(): bool
-    {
-        return false;
     }
 
     /**
