@@ -11,55 +11,44 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Comment
  *
  * @package App\Entity
- *
- * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
- * @ORM\EntityListeners({"App\Entity\CommentListener"})
  */
+#[ORM\Entity(repositoryClass: \App\Repository\CommentRepository::class)]
+#[ORM\EntityListeners([\App\Entity\CommentListener::class])]
 class Comment
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank()]
     private string $username;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     * @Assert\Email()
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank()]
+    #[Assert\Email()]
     private string $email;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Post", inversedBy="comments")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Post::class, inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: false)]
     private Post $post;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
-     * @Assert\Length(min="3")
-     */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank()]
+    #[Assert\Length(min: 3)]
     private string $content;
 
     /**
-     * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
+    #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $createdAt;
 
     /**
-     * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="update")
      */
+    #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $updatedAt;
 
     /**
