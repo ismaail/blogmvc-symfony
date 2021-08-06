@@ -6,6 +6,7 @@ use App\Entity\Comment;
 use App\Form\CommentType;
 use App\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -25,6 +26,7 @@ class CommentController extends AbstractController
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
+    #[Route('/post/{slug}/comment', name: 'post_comment_store', methods: ['POST'])]
     public function store(string $slug, Request $request, PostRepository $postRepository)
     {
         $post = $postRepository->findBySlug($slug);
