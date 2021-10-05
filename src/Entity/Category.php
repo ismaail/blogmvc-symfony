@@ -11,37 +11,28 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Class Category
  *
  * @package App\Entity
- *
- * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
  */
+#[ORM\Entity(repositoryClass: \App\Repository\CategoryRepository::class)]
 class Category
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $name;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
      * @Gedmo\Slug(fields={"name"})
      */
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private string $slug;
 
-    /**
-     * @ORM\Column(name="post_count", type="integer", options={"unsigned":true})
-     */
+    #[ORM\Column(name: 'post_count', type: 'integer', options: ['unsigned' => true])]
     private int $postCount = 0;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="category")
-     */
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: \App\Entity\Post::class)]
     private $posts;
 
     /**

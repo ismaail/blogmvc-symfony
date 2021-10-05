@@ -2,6 +2,7 @@
 
 namespace App\Controller\Auth;
 
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -17,6 +18,7 @@ class AuthController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
+    #[Route('/login', name: 'login', methods: ['GET', 'POST'])]
     public function login(AuthenticationUtils $authenticationUtils)
     {
         $error = $authenticationUtils->getLastAuthenticationError();

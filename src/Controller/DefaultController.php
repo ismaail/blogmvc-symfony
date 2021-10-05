@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Form\CommentType;
 use App\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -22,6 +23,7 @@ class DefaultController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
+    #[Route('/', name: 'home', methods: ['GET'])]
     public function index(PostRepository $postRepository, Request $request)
     {
         return $this->listPosts($postRepository, $request);
@@ -36,6 +38,7 @@ class DefaultController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
+    #[Route('/category/{slug}', name: 'category_posts', requirements: ['slug' => '[a-zA-Z0-9-]+'], methods: ['GET'])]
     public function byCategory(PostRepository $postRepository, string $slug, Request $request)
     {
         return $this->listPosts($postRepository, $request, ['category' => $slug]);
@@ -50,6 +53,7 @@ class DefaultController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
+    #[Route('/author/{username}', name: 'author_posts', requirements: ['slug' => '[a-zA-Z0-9-]+'], methods: ['GET'])]
     public function byAuthor(PostRepository $postRepository, string $username, Request $request)
     {
         return $this->listPosts($postRepository, $request, ['author' => $username]);
@@ -77,6 +81,7 @@ class DefaultController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
+    #[Route('/post/{slug}', name: 'post_show', requirements: ['slug' => '[a-zA-Z0-9-]+'], methods: ['GET'])]
     public function show(string $slug, PostRepository $postRepository)
     {
         $post = $postRepository->findBySlug($slug);

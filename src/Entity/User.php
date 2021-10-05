@@ -12,9 +12,8 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  * Class User
  *
  * @package App\Entity
- *
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
+#[ORM\Entity(repositoryClass: \App\Repository\UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
@@ -23,31 +22,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public const ROLE_ADMIN = 'ROLE_ADMIN';
     public const ROLE_MEMBER = 'ROLE_MEMBER';
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, unique=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private string $username;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $password;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="author")
-     */
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: \App\Entity\Post::class)]
     private $posts;
 
-    /**
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: 'json')]
     private $roles;
 
     /**

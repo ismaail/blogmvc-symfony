@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 
 services:
     database:
@@ -66,10 +66,10 @@ services:
 volumes:
     blogmvc-data-mysql:
         driver: local
+        name: blogmvc-mysql
 #    data-blogmvc-redis:
 #        driver: local
 
 networks:
     default:
-        external:
-            name: nginx_reverse_proxy_network
+        name: nginx_reverse_proxy_network

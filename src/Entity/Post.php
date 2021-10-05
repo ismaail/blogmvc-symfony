@@ -11,55 +11,42 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Class Post
  *
  * @package App\Entity
- *
- * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
  */
+#[ORM\Entity(repositoryClass: \App\Repository\PostRepository::class)]
 class Post
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $title;
 
     /**
      * @Gedmo\Slug(fields={"title"}, updatable=false)
-     * @ORM\Column(type="string", length=255, unique=true)
      */
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private string $slug;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private string $content;
 
     /**
-     * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
+    #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $createdAt;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="posts", fetch="EAGER")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Category::class, fetch: 'EAGER', inversedBy: 'posts')]
+    #[ORM\JoinColumn(nullable: false)]
     private Category $category;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="posts", fetch="EAGER")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\User::class, fetch: 'EAGER', inversedBy: 'posts')]
+    #[ORM\JoinColumn(nullable: false)]
     private User $author;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="post", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(mappedBy:'post', targetEntity: \App\Entity\Comment::class, orphanRemoval: true)]
     private $comments;
 
     /**
