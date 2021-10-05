@@ -329,9 +329,6 @@
     "symfony/options-resolver": {
         "version": "v4.1.3"
     },
-    "symfony/orm-pack": {
-        "version": "v1.0.5"
-    },
     "symfony/password-hasher": {
         "version": "v5.3.4"
     },
@@ -417,7 +414,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "5.3",
-            "ref": "8b35bfc00a7716db4ca5a764a4b338476ca3a704"
+            "ref": "227eba5e0c7e8fc4beda3537c3d81dc23ba08182"
         },
         "files": [
             "config/packages/security.yaml"
