@@ -15,23 +15,36 @@ use Doctrine\Common\Collections\ArrayCollection;
 #[ORM\Entity(repositoryClass: \App\Repository\CategoryRepository::class)]
 class Category
 {
+    /**
+     * @var int
+     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     private int $id;
 
+    /**
+     * @var string
+     */
     #[ORM\Column(type: 'string', length: 255)]
     private string $name;
 
     /**
-     * @Gedmo\Slug(fields={"name"})
+     * @var string
      */
     #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Gedmo\Slug(fields: ['name'])]
     private string $slug;
 
+    /**
+     * @var int
+     */
     #[ORM\Column(name: 'post_count', type: 'integer', options: ['unsigned' => true])]
     private int $postCount = 0;
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection<\App\Entity\Post>
+     */
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: \App\Entity\Post::class)]
     private $posts;
 

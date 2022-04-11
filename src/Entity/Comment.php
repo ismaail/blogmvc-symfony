@@ -16,33 +16,49 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\EntityListeners([\App\Entity\CommentListener::class])]
 class Comment
 {
+    /**
+     * @var int
+     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private int $id;
 
+    /**
+     * @var string
+     */
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank()]
     private string $username;
 
+    /**
+     * @var string
+     */
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank()]
     #[Assert\Email()]
     private string $email;
 
+    /**
+     * @var \App\Entity\Post
+     */
     #[ORM\ManyToOne(targetEntity: \App\Entity\Post::class, inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     private Post $post;
 
+    /**
+     * @var string
+     */
     #[ORM\Column(type: 'text')]
     #[Assert\NotBlank()]
     #[Assert\Length(min: 3)]
     private string $content;
 
     /**
-     * @Gedmo\Timestampable(on="create")
+     * @var \DateTimeInterface
      */
     #[ORM\Column(type: 'datetime')]
+    #[Gedmo\Timestampable(on: 'create')]
     private \DateTimeInterface $createdAt;
 
     /**
