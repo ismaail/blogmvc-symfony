@@ -8,10 +8,14 @@ services:
         env_file: ./docker/mysql/.env
         volumes:
             - blogmvc-data-mysql:/var/lib/mysql
+        networks:
+          - blogmvc
 
     wwwsqldesigner:
         container_name: blogmvc_wwwsqldesigner
         image: ismaail/wwwsqldesigner
+        networks:
+          - blogmvc
         ports:
             - "8000:80"
         links:
@@ -30,17 +34,21 @@ services:
     redis:
         container_name: blogmvc_redis
         image: redis:5.0
+        networks:
+          - blogmvc
 #        volumes:
 #            - data-blogmvc-redis:/data
 
     fpm:
         container_name: blogmvc_fpm
-        image: ismaail/php:8.0-alpine-fpm-dev
+        image: ismaail/php:8.1-alpine-fpm
         volumes:
             - ".:/home/docker:rw"
             - "/home/ismaail/.cache/composer:/home/www-data/.composer/cache"
-            - "./docker/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini:ro"
+            - "./docker/php/custom.ini:/usr/local/etc/php/conf.d/z-custom.ini:ro"
         working_dir: "/home/docker"
+        networks:
+          - blogmvc
         links:
             - database
             - redis
@@ -50,16 +58,29 @@ services:
 
     web:
         container_name: blogmvc_web
-        image: nginx:latest
-        env_file: ./docker/nginx/.env
+        image: nginx:alpine
         volumes:
             - ".:/home/docker"
             - "./docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro"
+        networks:
+            - proxy
+            - blogmvc
         links:
             - fpm
         depends_on:
             - fpm
-
+        labels:
+            - "traefik.enable=true"
+            - "traefik.docker.network=proxy"
+            # http
+            - "traefik.http.routers.blogmvc.entrypoints=http"
+            - "traefik.http.routers.blogmvc.rule=Host(`blogmvc.localhost`, `www.blogmvc.localhost`)"
+            # https
+            - "traefik.http.routers.blogmvc-secure.tls=true"
+            - "traefik.http.middlewares.blogmvc-https-redirect.redirectscheme.scheme=https"
+            - "traefik.http.routers.blogmvc.middlewares=blogmvc-https-redirect"
+            - "traefik.http.routers.blogmvc-secure.entrypoints=https"
+            - "traefik.http.routers.blogmvc-secure.rule=Host(`blogmvc.localhost`, `www.blogmvc.localhost`)"
 #
 # Volumes definition
 #
@@ -71,5 +92,7 @@ volumes:
 #        driver: local
 
 networks:
-    default:
-        name: nginx_reverse_proxy_network
+    proxy:
+      external: true
+    blogmvc:
+        name: blogmvc
