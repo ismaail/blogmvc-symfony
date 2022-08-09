@@ -64,7 +64,7 @@ class UserFixtures extends Fixture
     /**
      * @return \Generator
      */
-    private function createMembers()
+    private function createMembers(): \Generator
     {
         for ($i = 0; $i < 10; $i++) {
             $user = new User();

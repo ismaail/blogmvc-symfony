@@ -30,7 +30,7 @@ class CategoryRepository extends ServiceEntityRepository
     /**
      * @return \App\Entity\Category[]
      */
-    public function findAll()
+    public function findAll(): array
     {
         $query = $this->createQueryBuilder('c')
             ->getQuery();

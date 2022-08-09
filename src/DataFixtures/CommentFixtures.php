@@ -53,7 +53,7 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
      * @return \Generator|\App\Entity\Comment
      * @throws \Exception
      */
-    private function create($post)
+    private function create($post): \Generator|\App\Entity\Comment
     {
         $number = random_int(1, 5);
 

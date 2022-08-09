@@ -19,7 +19,7 @@ class AuthController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      */
     #[Route('/login', name: 'login', methods: ['GET', 'POST'])]
-    public function login(AuthenticationUtils $authenticationUtils)
+    public function login(AuthenticationUtils $authenticationUtils): \Symfony\Component\HttpFoundation\Response
     {
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();

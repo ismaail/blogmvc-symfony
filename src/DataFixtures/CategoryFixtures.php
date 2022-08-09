@@ -42,7 +42,7 @@ class CategoryFixtures extends Fixture
     /**
      * @return \Generator
      */
-    private function create()
+    private function create(): \Generator
     {
         for ($i = 0; $i < 10; $i++) {
             yield (new Category())

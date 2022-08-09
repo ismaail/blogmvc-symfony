@@ -70,7 +70,7 @@ class DatabaseTestCase extends WebTestCase
      *
      * @return \Doctrine\ORM\EntityManager
      */
-    protected function getEntityManager()
+    protected function getEntityManager(): \Doctrine\ORM\EntityManager
     {
         return static::$container->get('doctrine.orm.entity_manager');
     }

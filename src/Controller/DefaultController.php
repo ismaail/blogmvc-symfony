@@ -24,7 +24,7 @@ class DefaultController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      */
     #[Route('/', name: 'home', methods: ['GET'])]
-    public function index(PostRepository $postRepository, Request $request)
+    public function index(PostRepository $postRepository, Request $request): \Symfony\Component\HttpFoundation\Response
     {
         return $this->listPosts($postRepository, $request);
     }
@@ -39,7 +39,7 @@ class DefaultController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      */
     #[Route('/category/{slug}', name: 'category_posts', requirements: ['slug' => '[a-zA-Z0-9-]+'], methods: ['GET'])]
-    public function byCategory(PostRepository $postRepository, string $slug, Request $request)
+    public function byCategory(PostRepository $postRepository, string $slug, Request $request): \Symfony\Component\HttpFoundation\Response
     {
         return $this->listPosts($postRepository, $request, ['category' => $slug]);
     }
@@ -54,7 +54,7 @@ class DefaultController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      */
     #[Route('/author/{username}', name: 'author_posts', requirements: ['slug' => '[a-zA-Z0-9-]+'], methods: ['GET'])]
-    public function byAuthor(PostRepository $postRepository, string $username, Request $request)
+    public function byAuthor(PostRepository $postRepository, string $username, Request $request): \Symfony\Component\HttpFoundation\Response
     {
         return $this->listPosts($postRepository, $request, ['author' => $username]);
     }
@@ -66,7 +66,7 @@ class DefaultController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    private function listPosts(PostRepository $postRepository, Request $request, array $filters = [])
+    private function listPosts(PostRepository $postRepository, Request $request, array $filters = []): \Symfony\Component\HttpFoundation\Response
     {
         $page = (int)$request->get('page') ?: 1;
 
@@ -82,7 +82,7 @@ class DefaultController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      */
     #[Route('/post/{slug}', name: 'post_show', requirements: ['slug' => '[a-zA-Z0-9-]+'], methods: ['GET'])]
-    public function show(string $slug, PostRepository $postRepository)
+    public function show(string $slug, PostRepository $postRepository): \Symfony\Component\HttpFoundation\Response
     {
         $post = $postRepository->findBySlug($slug);
 
