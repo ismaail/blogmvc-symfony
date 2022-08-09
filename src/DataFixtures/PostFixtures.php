@@ -57,7 +57,7 @@ class PostFixtures extends Fixture implements DependentFixtureInterface
      *
      * @return \Generator
      */
-    private function create(Category $category)
+    private function create(Category $category): \Generator
     {
         for ($i = 0; $i < $category->getPostCount(); $i++) {
             yield (new Post())

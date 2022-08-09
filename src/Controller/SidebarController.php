@@ -18,7 +18,7 @@ class SidebarController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function categories(CategoryRepository $categoryRepository)
+    public function categories(CategoryRepository $categoryRepository): \Symfony\Component\HttpFoundation\Response
     {
         $categories = $categoryRepository->findAll();
 
@@ -30,7 +30,7 @@ class SidebarController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function latestPosts(PostRepository $postRepository)
+    public function latestPosts(PostRepository $postRepository): \Symfony\Component\HttpFoundation\Response
     {
         $latestPosts = $postRepository->latest(5);
 

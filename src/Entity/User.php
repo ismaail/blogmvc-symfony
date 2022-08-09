@@ -169,7 +169,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *
      * @return string|null The salt
      */
-    public function getSalt()
+    public function getSalt(): ?string
     {
         return null;
     }

@@ -38,7 +38,7 @@ class PostRepository extends ServiceEntityRepository
      *
      * @return \Doctrine\ORM\Tools\Pagination\Paginator
      */
-    public function paginate(int $page = 1, int $perPage = 10, array $filters = [])
+    public function paginate(int $page = 1, int $perPage = 10, array $filters = []): \Doctrine\ORM\Tools\Pagination\Paginator
     {
         $qb = $this->createQueryBuilder('p')
             ->leftJoin('p.category', 'c')->addSelect('c')
@@ -87,7 +87,7 @@ class PostRepository extends ServiceEntityRepository
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    public function findBySlug(string $slug)
+    public function findBySlug(string $slug): \App\Entity\Post
     {
         $query = $this->createQueryBuilder('p')
             ->leftJoin('p.category', 'c')->addSelect('c')
@@ -113,7 +113,7 @@ class PostRepository extends ServiceEntityRepository
      *
      * @return \App\Entity\Post[]
      */
-    public function latest(int $cout)
+    public function latest(int $cout): array
     {
         $query = $this->createQueryBuilder('p')
             ->leftJoin('p.author', 'a')->addSelect('a')
