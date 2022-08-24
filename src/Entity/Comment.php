@@ -62,9 +62,10 @@ class Comment
     private \DateTimeInterface $createdAt;
 
     /**
-     * @Gedmo\Timestampable(on="update")
+     * @var \DateTimeInterface $updatedAt
      */
     #[ORM\Column(type: 'datetime')]
+    #[Gedmo\Timestampable(on: 'update')]
     private \DateTimeInterface $updatedAt;
 
     /**
