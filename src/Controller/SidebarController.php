@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\PostRepository;
 use App\Repository\CategoryRepository;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -18,7 +19,7 @@ class SidebarController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function categories(CategoryRepository $categoryRepository): \Symfony\Component\HttpFoundation\Response
+    public function categories(CategoryRepository $categoryRepository): Response
     {
         $categories = $categoryRepository->findAll();
 
@@ -30,7 +31,7 @@ class SidebarController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function latestPosts(PostRepository $postRepository): \Symfony\Component\HttpFoundation\Response
+    public function latestPosts(PostRepository $postRepository): Response
     {
         $latestPosts = $postRepository->latest(5);
 
