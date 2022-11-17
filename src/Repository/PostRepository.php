@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\Post;
@@ -10,10 +12,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
- * Class PostRepository
- *
- * @package App\Repository
- *
  * @method Post|null find($id, $lockMode = null, $lockVersion = null)
  * @method Post|null findOneBy(array $criteria, array $orderBy = null)
  * @method Post[]    findAll()
@@ -21,24 +19,12 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
  */
 class PostRepository extends ServiceEntityRepository
 {
-    /**
-     * PostRepository constructor.
-     *
-     * @param \Doctrine\Persistence\ManagerRegistry $registry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Post::class);
     }
 
-    /**
-     * @param int $page
-     * @param int $perPage
-     * @param array $filters
-     *
-     * @return \Doctrine\ORM\Tools\Pagination\Paginator
-     */
-    public function paginate(int $page = 1, int $perPage = 10, array $filters = []): \Doctrine\ORM\Tools\Pagination\Paginator
+    public function paginate(int $page = 1, int $perPage = 10, array $filters = []): Paginator
     {
         $qb = $this->createQueryBuilder('p')
             ->leftJoin('p.category', 'c')->addSelect('c')
@@ -56,10 +42,6 @@ class PostRepository extends ServiceEntityRepository
         return new Paginator($query);
     }
 
-    /**
-     * @param \Doctrine\ORM\QueryBuilder $qb
-     * @param array $filters
-     */
     private function setQueryFilters($qb, array $filters): void
     {
         // Filter by Category slug.
@@ -77,17 +59,7 @@ class PostRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * Find a single Post by slug,
-     * if not found, throws 404 error.
-     *
-     * @param string $slug
-     *
-     * @return \App\Entity\Post
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
-    public function findBySlug(string $slug): \App\Entity\Post
+    public function findBySlug(string $slug): Post
     {
         $query = $this->createQueryBuilder('p')
             ->leftJoin('p.category', 'c')->addSelect('c')
@@ -111,7 +83,7 @@ class PostRepository extends ServiceEntityRepository
     /**
      * @param int $cout
      *
-     * @return \App\Entity\Post[]
+     * @return array<\App\Entity\Post>
      */
     public function latest(int $cout): array
     {
@@ -126,13 +98,6 @@ class PostRepository extends ServiceEntityRepository
         return $query->getresult();
     }
 
-    /**
-     * @param \App\Entity\Post $post
-     * @param \App\Entity\Comment $comment
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
     public function addComment(Post $post, Comment $comment): void
     {
         $post->addComment($comment);

@@ -1,39 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataFixtures;
 
 use App\Entity\Post;
 use App\Entity\Comment;
+use Faker\Generator as FakerGenerator;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-/**
- * Class CommentFixtures
- *
- * @package App\DataFixtures
- */
 class CommentFixtures extends Fixture implements DependentFixtureInterface
 {
-    /**
-     * @var \Faker\Generator
-     */
-    private $faker;
+    private FakerGenerator $faker;
 
-    /**
-     * CommentFixtures constructor.
-     */
     public function __construct()
     {
         $this->faker = \Faker\Factory::create();
     }
 
-    /**
-     * Load data fixtures with the passed EntityManager
-     *
-     * @param \Doctrine\Persistence\ObjectManager $manager
-     */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $posts = $manager->getRepository(Post::class)->findAll();
 
@@ -47,13 +34,7 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
         }
     }
 
-    /**
-     * @param \App\Entity\Post $post
-     *
-     * @return \Generator|\App\Entity\Comment
-     * @throws \Exception
-     */
-    private function create($post): \Generator|\App\Entity\Comment
+    private function create(Post $post): \Generator|Comment
     {
         $number = random_int(1, 5);
 
@@ -75,7 +56,7 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
      * This method must return an array of fixtures classes
      * on which the implementing class depends on
      *
-     * @return array
+     * @return array<class-string<Fixture>>
      */
     public function getDependencies(): array
     {

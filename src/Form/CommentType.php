@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -7,18 +9,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\{ TextType, EmailType, TextareaType, SubmitType };
 
 /**
- * Class CommentType
- *
- * @package App\Form
+ * @SuppressWarnings(PHPMD.UnusedFormalParameter)
  */
 class CommentType extends AbstractType
 {
-    /**
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     * @param array $options
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

@@ -1,40 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataFixtures;
 
 use Faker;
 use App\Entity\User;
+use Faker\Generator as FakerGenerator;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-/**
- * Class UserFixtures
- * @package App\DataFixtures
- *
- * @SuppressWarnings(PHPMD.UnusedFormalParameter)
- */
 class UserFixtures extends Fixture
 {
-    /**
-     * @var \Faker\Generator
-     */
-    private \Faker\Generator $faker;
+    private FakerGenerator $faker;
 
-    /**
-     * CategoryFixtures constructor.
-     *
-     * @param \Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface $passwordHasher
-     */
     public function __construct(private UserPasswordHasherInterface $passwordHasher)
     {
         $this->faker = Faker\Factory::create();
     }
 
-    /**
-     * @param \Doctrine\Persistence\ObjectManager $manager
-     */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         // Create Admin
         $admin = $this->createAdmin();
@@ -48,9 +34,6 @@ class UserFixtures extends Fixture
         $manager->flush();
     }
 
-    /**
-     * @return \App\Entity\User
-     */
     private function createAdmin(): User
     {
         $admin = new User();
@@ -61,10 +44,7 @@ class UserFixtures extends Fixture
         return $admin;
     }
 
-    /**
-     * @return \Generator
-     */
-    private function createMembers(): \Generator
+    private function createMembers(): \Generator|User
     {
         for ($i = 0; $i < 10; $i++) {
             $user = new User();

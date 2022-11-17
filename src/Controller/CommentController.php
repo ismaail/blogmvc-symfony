@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\Comment;
@@ -11,23 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-/**
- * Class CommentController
- *
- * @package App\Controller
- */
 class CommentController extends AbstractController
 {
-    /**
-     * @param string $slug
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \App\Repository\PostRepository $postRepository
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
     #[Route('/post/{slug}/comment', name: 'post_comment_store', methods: ['POST'])]
     public function store(string $slug, Request $request, PostRepository $postRepository): RedirectResponse|Response
     {

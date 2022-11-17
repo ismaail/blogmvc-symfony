@@ -1,36 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataFixtures;
 
 use Faker;
 use App\Entity\Category;
+use Faker\Generator as FakerGenerator;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 
-/**
- * Class CategoryFixtures
- *
- * @package App\DataFixtures
- */
 class CategoryFixtures extends Fixture
 {
-    /**
-     * @var \Faker\Generator
-     */
-    private $faker;
+    private FakerGenerator $faker;
 
-    /**
-     * CategoryFixtures constructor.
-     */
     public function __construct()
     {
         $this->faker = Faker\Factory::create();
     }
 
-    /**
-     * @param \Doctrine\Persistence\ObjectManager $manager
-     */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         foreach ($this->create() as $category) {
             $manager->persist($category);
@@ -39,10 +28,7 @@ class CategoryFixtures extends Fixture
         $manager->flush();
     }
 
-    /**
-     * @return \Generator
-     */
-    private function create(): \Generator
+    private function create(): \Generator|Category
     {
         for ($i = 0; $i < 10; $i++) {
             yield (new Category())

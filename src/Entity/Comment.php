@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use DateTime;
@@ -7,207 +9,124 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Class Comment
- *
- * @package App\Entity
- */
 #[ORM\Entity(repositoryClass: \App\Repository\CommentRepository::class)]
 #[ORM\EntityListeners([\App\Entity\CommentListener::class])]
 class Comment
 {
-    /**
-     * @var int
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private int $id;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank()]
     private string $username;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank()]
     #[Assert\Email()]
     private string $email;
 
-    /**
-     * @var \App\Entity\Post
-     */
     #[ORM\ManyToOne(targetEntity: \App\Entity\Post::class, inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     private Post $post;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(type: 'text')]
     #[Assert\NotBlank()]
     #[Assert\Length(min: 3)]
     private string $content;
 
-    /**
-     * @var \DateTimeInterface
-     */
     #[ORM\Column(type: 'datetime')]
     #[Gedmo\Timestampable(on: 'create')]
     private \DateTimeInterface $createdAt;
 
-    /**
-     * @var \DateTimeInterface $updatedAt
-     */
     #[ORM\Column(type: 'datetime')]
     #[Gedmo\Timestampable(on: 'update')]
     private \DateTimeInterface $updatedAt;
 
-    /**
-     * Comment constructor.
-     */
     public function __construct()
     {
         $this->createdAt = new DateTime();
         $this->updatedAt = new DateTime();
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getUsername(): string
     {
         return $this->username;
     }
 
-    /**
-     * @param string $username
-     *
-     * @return \App\Entity\Comment
-     */
-    public function setUsername(string $username): Comment
+    public function setUsername(string $username): self
     {
         $this->username = $username;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getEmail(): string
     {
         return $this->email;
     }
 
-    /**
-     * @param string $email
-     *
-     * @return \App\Entity\Comment
-     */
-    public function setEmail(string $email): Comment
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
         return $this;
     }
 
-    /**
-     * @return \App\Entity\Post
-     */
     public function getPost(): Post
     {
         return $this->post;
     }
 
-    /**
-     * @param \App\Entity\Post $post
-     *
-     * @return \App\Entity\Comment
-     */
-    public function setPost(Post $post): Comment
+    public function setPost(?Post $post): self
     {
         $this->post = $post;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getContent(): string
     {
         return $this->content;
     }
 
-    /**
-     * @param string $content
-     *
-     * @return \App\Entity\Comment
-     */
-    public function setContent(string $content): Comment
+    public function setContent(string $content): self
     {
         $this->content = $content;
 
         return $this;
     }
 
-    /**
-     * @return \DateTimeInterface
-     */
     public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param \DateTimeInterface $createdAt
-     *
-     * @return \App\Entity\Comment
-     */
-    public function setCreatedAt(\DateTimeInterface $createdAt): Comment
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    /**
-     * @return \DateTimeInterface
-     */
     public function getUpdatedAt(): \DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    /**
-     * @param \DateTimeInterface $updatedAt
-     *
-     * @return \App\Entity\Comment
-     */
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): Comment
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getGravatar(): string
     {
         $hash = md5($this->email);

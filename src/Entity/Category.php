@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -7,38 +9,21 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * Class Category
- *
- * @package App\Entity
- */
 #[ORM\Entity(repositoryClass: \App\Repository\CategoryRepository::class)]
 class Category
 {
-    /**
-     * @var int
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     private int $id;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(type: 'string', length: 255)]
     private string $name;
 
-    /**
-     * @var string
-     */
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Gedmo\Slug(fields: ['name'])]
     private string $slug;
 
-    /**
-     * @var int
-     */
     #[ORM\Column(name: 'post_count', type: 'integer', options: ['unsigned' => true])]
     private int $postCount = 0;
 
@@ -46,78 +31,48 @@ class Category
      * @var \Doctrine\Common\Collections\ArrayCollection<\App\Entity\Post>
      */
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: \App\Entity\Post::class)]
-    private $posts;
+    private Collection $posts;
 
-    /**
-     * Category constructor.
-     */
     public function __construct()
     {
         $this->posts = new ArrayCollection();
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return \App\Entity\Category
-     */
-    public function setName(string $name): Category
+    public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getSlug(): ?string
     {
         return $this->slug;
     }
 
-    /**
-     * @param string $slug
-     *
-     * @return \App\Entity\Category
-     */
-    public function setSlug(string $slug): Category
+    public function setSlug(string $slug): self
     {
         $this->slug = $slug;
 
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getPostCount(): int
     {
         return $this->postCount;
     }
 
-    /**
-     * @param int $postCount
-     *
-     * @return \App\Entity\Category
-     */
-    public function setPostCount(int $postCount): Category
+    public function setPostCount(int $postCount): self
     {
         $this->postCount = $postCount;
 
@@ -125,19 +80,14 @@ class Category
     }
 
     /**
-     * @return Collection
+     * @return Collection<\App\Entity\Post>
      */
     public function getPosts(): Collection
     {
         return $this->posts;
     }
 
-    /**
-     * @param \App\Entity\Post $post
-     *
-     * @return \App\Entity\Category
-     */
-    public function addPost(Post $post): Category
+    public function addPost(Post $post): self
     {
         if (!$this->posts->contains($post)) {
             $this->posts[] = $post;
@@ -147,12 +97,7 @@ class Category
         return $this;
     }
 
-    /**
-     * @param \App\Entity\Post $post
-     *
-     * @return \App\Entity\Category
-     */
-    public function removePost(Post $post): Category
+    public function removePost(Post $post): self
     {
         if ($this->posts->contains($post)) {
             $this->posts->removeElement($post);

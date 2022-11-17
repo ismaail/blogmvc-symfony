@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Form\CommentType;
@@ -9,83 +11,55 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-/**
- * Class DefaultController
- *
- * @package App\Controller
- */
 class DefaultController extends AbstractController
 {
+    public function __construct(private PostRepository $postRepository)
+    {
+    }
+
     /**
      * List All Posts with pagination.
-     *
-     * @param \App\Repository\PostRepository $postRepository
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
     #[Route('/', name: 'home', methods: ['GET'])]
-    public function index(PostRepository $postRepository, Request $request): Response
+    public function index(Request $request): Response
     {
-        return $this->listPosts($postRepository, $request);
+        return $this->listPosts($request);
     }
 
     /**
      * List All Posts by Category slug with pagination.
-     *
-     * @param \App\Repository\PostRepository $postRepository
-     * @param string $slug
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
     #[Route('/category/{slug}', name: 'category_posts', requirements: ['slug' => '[a-zA-Z0-9-]+'], methods: ['GET'])]
-    public function byCategory(PostRepository $postRepository, string $slug, Request $request): Response
+    public function byCategory(string $slug, Request $request): Response
     {
-        return $this->listPosts($postRepository, $request, ['category' => $slug]);
+        return $this->listPosts($request, ['category' => $slug]);
     }
 
     /**
      * List All Posts by Author username with pagination.
-     *
-     * @param \App\Repository\PostRepository $postRepository
-     * @param string $username
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
     #[Route('/author/{username}', name: 'author_posts', requirements: ['slug' => '[a-zA-Z0-9-]+'], methods: ['GET'])]
-    public function byAuthor(PostRepository $postRepository, string $username, Request $request): Response
+    public function byAuthor(string $username, Request $request): Response
     {
-        return $this->listPosts($postRepository, $request, ['author' => $username]);
+        return $this->listPosts($request, ['author' => $username]);
     }
 
-    /**
-     * @param \App\Repository\PostRepository $postRepository
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param array $filters
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    private function listPosts(PostRepository $postRepository, Request $request, array $filters = []): Response
+    private function listPosts(Request $request, array $filters = []): Response
     {
         $page = (int)$request->get('page') ?: 1;
 
-        $posts = $postRepository->paginate($page, 10, $filters);
+        $posts = $this->postRepository->paginate($page, 10, $filters);
 
         return $this->render('default/index.html.twig', compact('posts'));
     }
 
     /**
-     * @param string $slug
-     * @param \App\Repository\PostRepository $postRepository
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * Show single Post by Slug.
      */
     #[Route('/post/{slug}', name: 'post_show', requirements: ['slug' => '[a-zA-Z0-9-]+'], methods: ['GET'])]
-    public function show(string $slug, PostRepository $postRepository): Response
+    public function show(string $slug): Response
     {
-        $post = $postRepository->findBySlug($slug);
+        $post = $this->postRepository->findBySlug($slug);
 
         $form = $this->createForm(CommentType::class)->createView();
 

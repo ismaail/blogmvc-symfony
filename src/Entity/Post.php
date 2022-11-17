@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -7,11 +9,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * Class Post
- *
- * @package App\Entity
- */
 #[ORM\Entity(repositoryClass: \App\Repository\PostRepository::class)]
 class Post
 {
@@ -23,19 +20,15 @@ class Post
     #[ORM\Column(type: 'string', length: 255)]
     private string $title;
 
-    /**
-     * @Gedmo\Slug(fields={"title"}, updatable=false)
-     */
     #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Gedmo\Slug(fields: ['title'], updatable: false)]
     private string $slug;
 
     #[ORM\Column(type: 'text')]
     private string $content;
 
-    /**
-     * @Gedmo\Timestampable(on="create")
-     */
     #[ORM\Column(type: 'datetime')]
+    #[Gedmo\Timestampable(on: 'create')]
     private \DateTimeInterface $createdAt;
 
     #[ORM\ManyToOne(targetEntity: \App\Entity\Category::class, fetch: 'EAGER', inversedBy: 'posts')]
@@ -49,136 +42,82 @@ class Post
     #[ORM\OneToMany(mappedBy:'post', targetEntity: \App\Entity\Comment::class, orphanRemoval: true)]
     private $comments;
 
-    /**
-     * Post constructor.
-     */
     public function __construct()
     {
         $this->comments = new ArrayCollection();
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @param string $title
-     *
-     * @return \App\Entity\Post
-     */
-    public function setTitle(string $title): Post
+    public function setTitle(string $title): self
     {
         $this->title = $title;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getSlug(): string
     {
         return $this->slug;
     }
 
-    /**
-     * @param string $slug
-     *
-     * @return \App\Entity\Post
-     */
-    public function setSlug(string $slug): Post
+    public function setSlug(string $slug): self
     {
         $this->slug = $slug;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getContent(): string
     {
         return $this->content;
     }
 
-    /**
-     * @param string $content
-     *
-     * @return \App\Entity\Post
-     */
-    public function setContent(string $content): Post
+    public function setContent(string $content): self
     {
         $this->content = $content;
 
         return $this;
     }
 
-    /**
-     * @return \DateTimeInterface
-     */
     public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param \DateTimeInterface $createdAt
-     *
-     * @return \App\Entity\Post
-     */
-    public function setCreatedAt(\DateTimeInterface $createdAt): Post
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    /**
-     * @return \App\Entity\Category
-     */
     public function getCategory(): Category
     {
         return $this->category;
     }
 
-    /**
-     * @param \App\Entity\Category $category
-     *
-     * @return \App\Entity\Post
-     */
-    public function setCategory(Category $category): Post
+    public function setCategory(?Category $category): self
     {
         $this->category = $category;
 
         return $this;
     }
 
-    /**
-     * @return \App\Entity\User
-     */
     public function getAuthor(): User
     {
         return $this->author;
     }
 
-    /**
-     * @param \App\Entity\User $author
-     *
-     * @return \App\Entity\Post
-     */
-    public function setAuthor(User $author): Post
+    public function setAuthor(?User $author): self
     {
         $this->author = $author;
 
@@ -186,19 +125,14 @@ class Post
     }
 
     /**
-     * @return Collection
+     * @return Collection<\App\Entity\Comment>
      */
     public function getComments(): Collection
     {
         return $this->comments;
     }
 
-    /**
-     * @param \App\Entity\Comment $comment
-     *
-     * @return \App\Entity\Post
-     */
-    public function addComment(Comment $comment): Post
+    public function addComment(Comment $comment): self
     {
         if (! $this->comments->contains($comment)) {
             $this->comments[] = $comment;
@@ -208,12 +142,7 @@ class Post
         return $this;
     }
 
-    /**
-     * @param \App\Entity\Comment $comment
-     *
-     * @return \App\Entity\Post
-     */
-    public function removeComment(Comment $comment): Post
+    public function removeComment(Comment $comment): self
     {
         if ($this->comments->contains($comment)) {
             $this->comments->removeElement($comment);

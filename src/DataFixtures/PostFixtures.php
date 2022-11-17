@@ -1,43 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataFixtures;
 
 use Faker;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Entity\Category;
+use Faker\Generator as FakerGenerator;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-/**
- * Class PostFixtures
- *
- * @package App\DataFixtures
- */
 class PostFixtures extends Fixture implements DependentFixtureInterface
 {
-    /**
-     * @var \Faker\Generator
-     */
-    private $faker;
+    private FakerGenerator $faker;
 
     /**
-     * @var \App\Entity\User[]
+     * @var array<\App\Entity\User>
      */
-    private $authors;
+    private array $authors;
 
-    /**
-     * CategoryFixtures constructor.
-     */
     public function __construct()
     {
         $this->faker = Faker\Factory::create();
     }
 
-    /**
-     * @param \Doctrine\Persistence\ObjectManager $manager
-     */
     public function load(ObjectManager $manager): void
     {
         $categories = $manager->getRepository(Category::class)->findAll();
@@ -52,12 +41,7 @@ class PostFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    /**
-     * @param \App\Entity\Category $category
-     *
-     * @return \Generator
-     */
-    private function create(Category $category): \Generator
+    private function create(Category $category): \Generator|Post
     {
         for ($i = 0; $i < $category->getPostCount(); $i++) {
             yield (new Post())
@@ -70,9 +54,6 @@ class PostFixtures extends Fixture implements DependentFixtureInterface
         }
     }
 
-    /**
-     * @return \App\Entity\User
-     */
     private function randomAuthor(): User
     {
         $random = random_int(0, \count($this->authors) - 1);
@@ -84,7 +65,7 @@ class PostFixtures extends Fixture implements DependentFixtureInterface
      * This method must return an array of fixtures classes
      * on which the implementing class depends on
      *
-     * @return array
+     * @return array<class-string<Fixture>>
      */
     public function getDependencies(): array
     {
