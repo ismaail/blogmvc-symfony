@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller;
 
 use App\Entity\Post;
@@ -8,10 +10,6 @@ use App\Tests\EntityCreator;
 use App\Tests\DatabaseTestCase;
 
 /**
- * Class DefaultControllerTest
- *
- * @package App\Tests\Controller
- *
  * @SuppressWarnings(PHPMD.CamelCaseMethodName)
  * @SuppressWarnings(PHPMD.UnusedFormalParameter)
  * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
@@ -21,14 +19,6 @@ class DefaultControllerTest extends DatabaseTestCase
     use TestHelper;
     use EntityCreator;
 
-    /**
-     * @param string $postTitle
-     * @param string $creationDate
-     * @param string $categoryName
-     * @param string $authorName
-     *
-     * @return \App\Entity\Post
-     */
     private function createPost(string $postTitle, string $creationDate, string $categoryName, string $authorName): Post
     {
         $user = $this->makeUser(['username' => $authorName]);

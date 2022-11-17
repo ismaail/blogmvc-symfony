@@ -1,15 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Entity;
 
 use App\Entity\Category;
 use App\Tests\DatabaseTestCase;
 
 /**
- * Class CategoryTest
- *
- * @package App\Tests\Entity
- *
  * @codingStandardsIgnoreFile
  * @SuppressWarnings(PHPMD.CamelCaseMethodName)
  * @SuppressWarnings(PHPMD.UnusedFormalParameter)

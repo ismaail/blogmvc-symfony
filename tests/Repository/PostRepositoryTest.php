@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Repository;
 
 use App\Entity\Post;
@@ -8,10 +10,6 @@ use App\Tests\EntityCreator;
 use App\Tests\DatabaseTestCase;
 
 /**
- * Class PostRepositoryTest
- *
- * @package App\Tests
- *
  * @SuppressWarnings(PHPMD.CamelCaseMethodName)
  * @SuppressWarnings(PHPMD.UnusedFormalParameter)
  * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps

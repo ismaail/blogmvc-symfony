@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests;
 
 use App\Entity\Post;
@@ -8,21 +10,12 @@ use App\Entity\Comment;
 use App\Entity\Category;
 
 /**
- * Trait EntityCreator
- *
- * @package App\Tests
- *
  * @method \Doctrine\ORM\EntityManager getEntityManager()
  */
 trait EntityCreator
 {
-    private static $userCounter = 0;
+    private static int $userCounter = 0;
 
-    /**
-     * @param array $input
-     *
-     * @return \App\Entity\Category
-     */
     public function makeCategory(array $input = []): Category
     {
         $category = new Category();
@@ -33,11 +26,6 @@ trait EntityCreator
         return $category;
     }
 
-    /**
-     * @param array $input
-     *
-     * @return \App\Entity\User
-     */
     public function makeUser(array $input = []): User
     {
         $author = (new User())
@@ -51,13 +39,6 @@ trait EntityCreator
         return $author;
     }
 
-    /**
-     * @param array $input
-     * @param \App\Entity\Category|null $category
-     * @param \App\Entity\User|null $author
-     *
-     * @return \App\Entity\Post
-     */
     public function makePost(array $input = [], ?Category $category = null, ?User $author = null): Post
     {
         if (null === $category) {
@@ -85,11 +66,6 @@ trait EntityCreator
         return $post;
     }
 
-    /**
-     * @param array $input
-     *
-     * @return \App\Entity\Comment
-     */
     public function makeComment(array $input = []): Comment
     {
         $comment = new Comment();

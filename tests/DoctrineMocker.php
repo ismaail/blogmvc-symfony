@@ -1,24 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests;
 
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Configuration;
+use PHPUnit\Framework\MockObject\MockObject;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+
 /**
- * Class DoctrineMocker
- *
- * @package AppBundle\Traits
- *
  * @mixin \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
  * @property \Symfony\Bundle\FrameworkBundle\KernelBrowser $client
  */
 trait DoctrineMocker
 {
-    /**
-     * @param array $items
-     * @param int $maxResult
-     *
-     * @return \PHPUnit\Framework\MockObject\MockObject|\Doctrine\ORM\Tools\Pagination\Paginator
-     */
-    public function mockPaginator(array $items, int $maxResult)
+    public function mockPaginator(array $items, int $maxResult): MockObject|Paginator
     {
         $mock = $this->getMockBuilder(\Doctrine\ORM\Tools\Pagination\Paginator::class)
             ->disableOriginalConstructor()
@@ -35,10 +32,7 @@ trait DoctrineMocker
         return $mock;
     }
 
-    /**
-     * @return \PHPUnit\Framework\MockObject\MockObject|\Doctrine\ORM\EntityManager
-     */
-    public function mockEntityManager()
+    public function mockEntityManager(): MockObject|EntityManager
     {
         $mock = $this->getMockBuilder(\Doctrine\ORM\EntityManager::class)
             ->disableOriginalConstructor()
@@ -52,10 +46,7 @@ trait DoctrineMocker
         return $mock;
     }
 
-    /**
-     * @return \PHPUnit\Framework\MockObject\MockObject|\Doctrine\ORM\Configuration
-     */
-    public function mockConfiguration()
+    public function mockConfiguration(): MockObject|Configuration
     {
         $mock = $this->getMockBuilder(\Doctrine\ORM\Configuration::class)
             ->disableOriginalConstructor()
